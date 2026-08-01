@@ -61,9 +61,9 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 | @sv/kit-ui | `frontend/vendor/sv-kit-ui-X.Y.Z.tgz` | tgz 교체 + package.json 갱신 |
 
 - 태그: `ui-vX.Y.Z`
-- **소비 채널 2종**: 스켈레톤 생성물·total 은 vendor 고정(오프라인 자급·
-  워커 안전), 손으로 관리하는 프로젝트(git-worktree-nextjs)는 git submodule
-  (`file:./sv-kit-frontend` symlink — 커밋 핀 고정, kit 수정 시 dev 즉시 반영)
+- **소비 채널은 vendor 고정 하나**: 스켈레톤 생성물·total·git-worktree-nextjs
+  전부 `vendor/sv-kit-ui-X.Y.Z.tgz` 로 소비 (오프라인 자급·워커 안전).
+  kit 수정 반영 = `npm pack` 후 소비자 vendor 교체 + package.json 갱신
 - 소비자는 vendor 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
   vendor 를 교체하기 전에는 도달하지 않는다. 이것이 breaking 변경의
   최종 방어선이다.

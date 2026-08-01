@@ -4,26 +4,25 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 훅·ui 프리미티브·탭 셸(shell/route-shell)·NavSidebar 를 소스(tsx)로 배포하고,
 소비 앱의 Next `transpilePackages` 가 직접 컴파일한다.
 
-백엔드 프레임워크(svkit pip 패키지)는 `sv-kit-backend` 저장소에 있다.
-프론트 소비자는 이 저장소만 서브모듈로 물면 된다 (구 `sv-kit` 통합 저장소에서 분리).
+백엔드 프레임워크(svkit pip 패키지)는 `sv-kit-backend` 저장소에 있다 (구 `sv-kit`
+통합 저장소에서 분리). 소비자는 이 저장소를 직접 물지 않고 tgz 를 vendor 로 동봉한다.
 
 > **수정 전 필독**: [CONTRACT.md](CONTRACT.md) — 공개 계약(깨면 소비자 파손)과
 > 내부(자유 변경)의 경계, additive 변경 규율.
 
 ## 사용 (프로젝트 쪽)
 
+`npm pack` 산출 tgz 를 소비 프로젝트 `vendor/` 에 동봉해 고정한다.
+
 ```jsonc
-// package.json — 서브모듈 소비 (dev 즉시 반영)
-{ "dependencies": { "@sv/kit-ui": "file:./sv-kit-frontend" } }
+// package.json
+{ "dependencies": { "@sv/kit-ui": "file:./vendor/sv-kit-ui-0.6.0.tgz" } }
 ```
 
 ```ts
 // next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
 transpilePackages: ["@sv/kit-ui"],
 ```
-
-vendor 소비(스켈레톤 생성물·total)는 `npm pack` 산출 tgz 를
-`frontend/vendor/sv-kit-ui-X.Y.Z.tgz` 로 동봉해 고정한다.
 
 ## 서브패스
 
