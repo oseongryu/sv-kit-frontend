@@ -25,7 +25,7 @@ export function ConfirmDialog({
   onClose,
 }: ConfirmDialogProps) {
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (!v) onClose(); }}>
+    <Dialog open={open} onOpenChange={(v: boolean) => { if (!v) onClose(); }}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>

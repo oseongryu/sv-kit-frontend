@@ -56,7 +56,7 @@ export function CommonModal({
   const isCustom = !!headerActions;
 
   return (
-    <Dialog open={open} onOpenChange={(v) => { if (v && onOpen) onOpen(); if (!v && !preventClose) onClose(); }}>
+    <Dialog open={open} onOpenChange={(v: boolean) => { if (v && onOpen) onOpen(); if (!v && !preventClose) onClose(); }}>
       <DialogContent
         className={cn(
           sizeClass,

@@ -3,5 +3,5 @@
 export * from "./api";
 export * from "./core";
 export * from "./hooks";
-export { NavSidebar } from "./NavSidebar";
-export type { NavLink } from "./NavSidebar";
+export { NavSidebar } from "./components/nav-sidebar";
+export type { NavLink } from "./components/nav-sidebar";
