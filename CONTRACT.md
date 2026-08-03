@@ -36,6 +36,10 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 - `core`: `makeTransport(resolve, events)` 와 `Transport`/
   `ResolvedSource`/`TransportEvents`/`EventStream*` 타입 모양
 - `hooks`: `useLocalStorage`, `useDebounce`, `useEventStream` 시그니처
+- `auth`: `createAuth(opts)` 가 돌려주는 **여덟 가지 모양**
+  (`saveToken`·`getToken`·`getAuthMeta`·`removeToken`·`isAuthenticated`·
+  `saveUnifiedToken`·`getUnifiedToken`·`removeUnifiedToken`)과 `AuthMeta`/`AuthOptions`
+  키 이름, 그리고 **localStorage 키 모양**(`{tokenPrefix}{scope}`). 로그인 화면은 앱의 것이다
 - `i18n`: `createI18n(opts)` 가 돌려주는 **네 가지 모양**
   (`useI18nStore`·`t`·`useT`·`hydrateI18n`)과 `I18nOptions` 키 이름.
   사전은 소비 앱이 갖는다 — kit 은 사전을 배포하지 않는다

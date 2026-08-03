@@ -2,6 +2,19 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.18.0
+
+- `auth` 서브패스 신설 — `createAuth({ defaultScope?, tokenPrefix?, metaPrefix?, unifiedKey?, validators? })`.
+  `api`(전송)·`core`(401 처리)는 있었는데 **토큰을 담고 만료를 판정하는 층**이 없어
+  앱마다 다시 짜고 있었다. 로그인 화면은 앱의 것으로 남긴다 — 무엇을 입력받는지가
+  앱마다 다르다(서버 주소를 받는 앱도 있다)
+- **스코프**를 열었다 — 서버를 여럿 붙이는 앱은 `getToken(serverId)`,
+  하나뿐인 앱은 `defaultScope` 를 정해 두고 `getToken()`. 소비 앱의 원본은
+  `jwt_token_{serverId}` 로 멀티서버를 전제해 그대로는 못 올라왔다
+- 만료 판정은 `validators` 로 늘린다. 기본은 `local`(JWT `exp` 클레임)과
+  `bearer_external`(불투명 토큰 — 받아 둔 메타의 `exp`, 없으면 서버 401 까지 유효)
+- `parseJwtPayload` 도 함께 내보낸다. `"use client"` 를 붙이지 않아 서버에서도 import 된다
+
 ## 0.17.0
 
 - `i18n` 서브패스 신설 — `createI18n({ translations, defaultLocale, fallbackLocale?, storageKey? })` 가
