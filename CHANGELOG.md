@@ -10,7 +10,10 @@
 - `ui/table` 추가 — `Table`·`TableHead`·`TableBody`·`TableRow`·`TableHeaderCell`·`TableCell`.
   전역 CSS(`table { … }`)로 칠하던 것을 컴포넌트로. `TableRow` 는 `selected`
   props 와 `onClick` 유무로 고를 수 있는 행을 표현한다
-- 둘 다 additive — 기존 서브패스·props 변경 없음
+- `ui/checkbox` 추가 — base-ui Checkbox 기반. 네이티브 `<input type="checkbox">` 는
+  브라우저마다 크기·색이 달라 다크 모드에서 특히 튄다.
+  props 는 `checked`/`onCheckedChange`(base-ui Root 그대로)
+- 셋 다 additive — 기존 서브패스·props 변경 없음
 
 ## 0.6.1
 
