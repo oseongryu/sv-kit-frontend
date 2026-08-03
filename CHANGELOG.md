@@ -2,6 +2,16 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.18.1
+
+- 문서 정비 — 백엔드를 **스택별 두 계보**로 안내한다(Flask 는 `sv-kit-backend`/`svkit`,
+  FastAPI 는 `sv-kit-backend-v2`/`svkit2`). 이 저장소는 v2 의 존재를 몰랐는데, 실제로는
+  `@sv/kit-ui` + `svkit2` 조합이 주력이고 v2 의 계약 테스트가 **이 저장소가 기대하는
+  응답 모양**을 고정하고 있어 참조가 이미 양방향이었다
+- 설치 예시의 핀이 `ui-v0.6.1` 에 멈춰 있던 것을 최신으로. 복붙하면 12판 낮은 판을 받았다
+- 실증 근거 문장을 현재 실적으로 갱신하면서 0.12.0 의 결함(선언 의존성에서 컴파일되지
+  않던 `ui/split-layout`)도 함께 적었다 — 파손 0건만 적으면 사실과 다르다
+
 ## 0.18.0
 
 - `auth` 서브패스 신설 — `createAuth({ defaultScope?, tokenPrefix?, metaPrefix?, unifiedKey?, validators? })`.

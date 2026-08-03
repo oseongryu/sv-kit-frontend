@@ -4,8 +4,8 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 훅·ui 프리미티브·탭 셸(shell/route-shell)·NavSidebar 를 소스(tsx)로 배포하고,
 소비 앱의 Next `transpilePackages` 가 직접 컴파일한다.
 
-백엔드 프레임워크(svkit pip 패키지)는 `sv-kit-backend` 저장소에 있다 (구 `sv-kit`
-통합 저장소에서 분리). 소비자는 이 저장소를 직접 물지 않고 tgz 를 vendor 로 동봉한다.
+백엔드는 스택별로 두 계보다 — Flask 는 `sv-kit-backend`(`svkit`), FastAPI 는
+`sv-kit-backend-v2`(`svkit2`). 프론트·백엔드 모두 **GitHub 태그 tarball 로 고정**해 받는다.
 
 > **수정 전 필독**: [CONTRACT.md](CONTRACT.md) — 공개 계약(깨면 소비자 파손)과
 > 내부(자유 변경)의 경계, additive 변경 규율.
@@ -16,7 +16,7 @@ GitHub 태그 tarball 로 버전을 고정해 설치한다 (로컬 개발은 `fi
 
 ```jsonc
 // package.json
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.6.1.tar.gz" } }
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.18.0.tar.gz" } }
 ```
 
 ```ts
