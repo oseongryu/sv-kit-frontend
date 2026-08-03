@@ -19,10 +19,12 @@ interface TabBarProps {
   onCloseOthers?: (id: string) => void;
   /** Active tab border+text color classes. Default: theme primary */
   activeColor?: string;
+  /** 탭 스트립 왼쪽에 붙는 자리 — 화면을 설명하는 값(경로·건수 등)을 둔다 */
+  leading?: React.ReactNode;
   actions?: React.ReactNode;
 }
 
-export function TabBar({ tabs, activeId, onSelect, onClose, onCloseAll, onCloseOthers, activeColor = "border-primary text-foreground", actions }: TabBarProps) {
+export function TabBar({ tabs, activeId, onSelect, onClose, onCloseAll, onCloseOthers, activeColor = "border-primary text-foreground", leading, actions }: TabBarProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
@@ -66,6 +68,11 @@ export function TabBar({ tabs, activeId, onSelect, onClose, onCloseAll, onCloseO
 
   return (
     <div className="flex items-center border-b border-border shrink-0 bg-card/60 backdrop-blur-md relative z-30 supports-[backdrop-filter]:bg-card/40">
+      {leading && (
+        <div className="flex items-center gap-1 px-2 shrink-0 border-r border-border">
+          {leading}
+        </div>
+      )}
       <div ref={scrollRef} className="flex-1 flex items-center gap-0 overflow-x-auto" style={{ scrollbarWidth: "thin" }}>
         {tabs.map((tab) => (
           <div
