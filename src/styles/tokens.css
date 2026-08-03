@@ -1,14 +1,16 @@
-/* 상태색 토큰 — success·warning.
+/* 상태색 토큰 — success·warning·info.
  *
  * kit-ui 는 CSS 를 배포하지 않고 shadcn 표준 토큰(primary·secondary·destructive·
  * muted…)만 가정한다. 그런데 상태를 다루는 프리미티브(`ui/status-badge` 의
- * ok·warn 톤, `ui/progress`)에는 "정상"과 "주의"가 필요하고, 이 둘은 표준에 없다.
+ * ok·warn·info 톤, `ui/progress`)에는 "정상"·"주의"·"진행중"이 필요하고, 표준에 없다.
+ * info 는 한때 `--primary` 를 빌려 썼는데, primary 가 무채색인 앱에서는 "진행중"이
+ * 회색으로 나와 상태로 읽히지 않았다(소비 앱에서 실제로 그랬다). 그래서 따로 둔다.
  * 화면마다 #16a34a 를 다시 적으면 다크 모드에서 한 곳씩 깨지므로 토큰으로 둔다.
  *
  * 소비 앱의 전역 CSS 에서 한 줄로 가져간다 (tailwind v4 기준, `@import "tailwindcss"` 뒤):
  *   @import "@sv/kit-ui/styles/tokens.css";
  *
- * 이 줄이 없으면 ok·warn 톤만 색이 조용히 안 나온다(다른 톤은 표준 토큰이라 멀쩡하다).
+ * 이 줄이 없으면 ok·warn·info 톤의 색이 조용히 안 나온다(bad·off 는 표준 토큰이라 멀쩡하다).
  * 값을 앱 팔레트에 맞추고 싶으면 이 파일을 가져간 뒤 `:root` 에서 덮어쓰면 된다.
  *
  * 색은 oklch — 라이트/다크를 같은 축(명도만 뒤집기)에서 다루려면 hex 보다 낫다.
@@ -18,15 +20,18 @@
 @theme inline {
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-info: var(--info);
 }
 
 :root {
   --success: oklch(0.6 0.15 150);
   --warning: oklch(0.7 0.16 70);
+  --info: oklch(0.55 0.21 259);
 }
 
 /* 다크 전환은 shadcn 관례대로 `.dark` 클래스 기준 */
 .dark {
   --success: oklch(0.72 0.16 152);
   --warning: oklch(0.79 0.15 75);
+  --info: oklch(0.68 0.16 259);
 }

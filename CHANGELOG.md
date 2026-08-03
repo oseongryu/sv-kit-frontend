@@ -2,6 +2,16 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.13.0
+
+- `styles/tokens.css` 에 `--info` 추가, `ui/status-badge`·`ui/progress` 의 `info` 톤이
+  `--primary` 대신 이걸 쓴다. **primary 가 무채색인 앱에서 "진행중"이 회색으로 나와
+  상태로 읽히지 않았다**(소비 앱에서 확인 — 파랑이던 알약이 회색이 됐다).
+  primary 는 앱마다 뜻이 다른 축(브랜드·주요 동작)이라 상태색이 빌려 쓸 자리가 아니다
+- **주의**: `tokens.css` 를 가져오지 않은 앱은 이제 `info` 톤도 색이 나오지 않는다
+  (종전에는 primary 라 나왔다). ok·warn 과 같은 조건이 됐을 뿐이지만, 이 판으로 올릴 때
+  전역 CSS 에 `@import "@sv/kit-ui/styles/tokens.css";` 가 있는지 확인하라
+
 ## 0.12.2
 
 0.12.1 은 배포물이 깨졌다(아래) — **0.12.1 을 쓰지 마라.** 내용은 이 판과 같다.

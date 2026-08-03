@@ -25,7 +25,7 @@ const TONE: Record<Tone, string> = {
   warn: "bg-warning/15 text-warning",
   bad: "bg-destructive/15 text-destructive",
   off: "bg-secondary text-muted-foreground",
-  info: "bg-primary/15 text-primary",
+  info: "bg-info/15 text-info",
 };
 
 export function StatusBadge({
@@ -53,7 +53,7 @@ const FILL: Record<Tone, string> = {
   warn: "bg-warning",
   bad: "bg-destructive",
   off: "bg-muted-foreground",
-  info: "bg-primary",
+  info: "bg-info",
 };
 
 /** 톤의 채움색 클래스(진행바 등) */
