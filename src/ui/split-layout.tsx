@@ -88,6 +88,18 @@ export interface SplitLayoutProps {
   leftClassName?: string;
   /** 오른쪽 패널 껍데기 클래스 */
   rightClassName?: string;
+  /** 분할 전체를 감싸는 클래스 — 감싸는 쪽이 `flex-1 min-h-0` 을 줘야 하는 화면이 있다 */
+  className?: string;
+  /**
+   * 좁은 화면 서랍에서 **아무 데나 누르면 닫히게** 할지. 기본 true.
+   * 목록 머리줄에 검색·필터·버튼이 있는 화면은 꺼라 — 그것들을 누를 때마다
+   * 서랍이 닫혀 쓸 수 없다. 끈 화면은 `layoutRef.close()` 로 고른 순간에만 닫는다.
+   */
+  closeDrawerOnClick?: boolean;
+  /** 좁은 화면 서랍 폭 등(기본 `w-[86vw] max-w-sm`) */
+  drawerClassName?: string;
+  /** 서랍의 X 버튼. 목록 자체에 닫기 수단이 있으면 끈다 */
+  showDrawerClose?: boolean;
 }
 
 function useIsNarrow(breakpoint: number): boolean {
@@ -146,6 +158,10 @@ export function SplitLayout({
   rightMinSize = 25,
   leftClassName,
   rightClassName,
+  className,
+  closeDrawerOnClick = true,
+  drawerClassName,
+  showDrawerClose = true,
 }: SplitLayoutProps) {
   const [left, right] = children;
   const narrow = useIsNarrow(mobileBreakpoint);
@@ -187,10 +203,21 @@ export function SplitLayout({
         ) : null}
         <div className="min-h-0 flex-1 overflow-auto">{right}</div>
         <Sheet open={drawer} onOpenChange={setDrawer}>
-          <SheetContent side="left" className="w-[86vw] max-w-sm overflow-auto p-0">
+          <SheetContent
+            side="left"
+            className={cn("overflow-auto p-0", drawerClassName ?? "w-[86vw] max-w-sm")}
+            showCloseButton={showDrawerClose}
+          >
             <SheetTitle className="sr-only">{leftTitle}</SheetTitle>
-            {/* 고르면 서랍은 닫힌다 — 좁은 화면에서 목록이 상세를 계속 가리면 고른 보람이 없다 */}
-            <div onClick={() => setDrawer(false)}>{left}</div>
+            {/* 고르면 서랍은 닫힌다 — 좁은 화면에서 목록이 상세를 계속 가리면
+                고른 보람이 없다. 다만 목록 머리줄에 검색·필터·버튼이 있는 화면은
+                그것들까지 서랍을 닫아 버려 쓸 수 없다 — 그런 화면은 이걸 끄고
+                `layoutRef.close()` 로 고른 순간에만 닫는다 */}
+            {closeDrawerOnClick ? (
+              <div onClick={() => setDrawer(false)}>{left}</div>
+            ) : (
+              left
+            )}
           </SheetContent>
         </Sheet>
       </div>
@@ -200,11 +227,13 @@ export function SplitLayout({
   return (
     <ResizablePanelGroup
       direction="horizontal"
+      className={className}
       defaultLayout={layout}
-      onLayoutChanged={(next, meta) => {
-        // 사람이 끈 것만 기억한다 — 버튼으로 접은 0 을 저장하면 다음 방문에 목록이 없다
-        if (meta.isUserInteraction) save(next);
-      }}
+      // 인자는 하나만 받는다 — `react-resizable-panels` 4.7 대의 시그니처다.
+      // 4.12 대는 두 번째로 `meta.isUserInteraction` 을 주지만 그걸 쓰면 선언
+      // 의존성(^4.7.3)에서 컴파일이 깨진다. "사람이 끈 것만 기억한다"는
+      // `save()` 가 0·100 을 거르는 것으로 이미 지켜진다.
+      onLayoutChanged={(next) => save(next)}
     >
       <ResizablePanel
         id={LEFT_ID}

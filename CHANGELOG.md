@@ -2,6 +2,23 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.14.0
+
+`ui/split-layout` 을 실제 소비 앱에 물려 보며 드러난 것들. **0.12.0~0.13.0 의
+`ui/split-layout` 은 선언 의존성에서 컴파일되지 않는다 — 이 판으로 올려라.**
+
+- **버그**: `onLayoutChanged` 를 2인자(`(next, meta)`)로 받고 있었다. 그건
+  `react-resizable-panels` **4.12 대**의 시그니처인데 이 패키지가 선언한 의존성은
+  `^4.7.3` 이고 4.7 대는 **1인자**다. 4.7.3 이 깔린 앱에서 타입 에러로 빌드가 깨졌고,
+  타입을 무시해도 `meta` 가 `undefined` 라 드래그마다 `TypeError` 가 났다.
+  1인자로 낮춘다 — "사람이 끈 것만 기억한다"는 의도는 `save()` 가 0·100 을 거르는
+  것으로 이미 지켜지고 있었다
+- `closeDrawerOnClick` 추가(기본 true = 종전 동작) — 좁은 화면 서랍이 **내부 아무 클릭에나
+  닫혔다.** 목록 머리줄에 검색·필터·버튼이 있는 화면은 그것들을 누를 때마다 서랍이 닫혀
+  쓸 수 없다. 끈 화면은 `layoutRef.close()` 로 고른 순간에만 닫는다
+- `className` 추가 — 분할 전체를 감싸는 클래스. `flex-1 min-h-0` 을 줘야 하는 화면이 있다
+- `drawerClassName`·`showDrawerClose` 추가 — 서랍 폭과 X 버튼. 앱마다 치수가 다르다
+
 ## 0.13.0
 
 - `styles/tokens.css` 에 `--info` 추가, `ui/status-badge`·`ui/progress` 의 `info` 톤이
