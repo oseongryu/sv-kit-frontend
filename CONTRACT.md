@@ -45,7 +45,14 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
     `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
     `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`·`FilterCheck`),
     `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
-    `ui/panel`(`PanelHead`·`RowCount`)
+    `ui/panel`(`PanelHead`·`RowCount`),
+    `ui/split-layout`(0.12.0~ — `SplitLayout`·`Pane`·`SplitLayoutHandle`.
+    `children` 이 `[왼쪽, 오른쪽]` 두 칸 튜플인 것과 폭 저장 키
+    `split:<storageKey>` 가 계약이다. `layoutRef` 를 안 주면 왼쪽은 접히지 않는다 —
+    **이 기본값을 바꾸면 손잡이 없는 화면에서 목록이 사라진다**),
+    `ui/theme-provider`(0.12.0~ — `ThemeProvider({ theme, children })`·
+    `themeBootScript(storageKey)`·`Theme`. 다크 클래스 이름 `dark` 와
+    부팅 스크립트가 읽는 값 모양(`{state:{theme}}` / `{theme}`)이 계약이다)
   - **기본 문구는 계약이다** — 한국어 기본값("저장"·"취소"·"닫기"·
     "불러오는 중…"·"불러오지 못했습니다 — ")을 바꾸지 않는다. 바꿔야 하면
     소비자가 optional props 로 덮어쓴다

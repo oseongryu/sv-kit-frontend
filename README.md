@@ -56,6 +56,8 @@ shadcn 계열 낱개 프리미티브 위에, 운영 화면이 매번 같은 모�
 | `ui/progress` | 진행바 (0–100 클램프, 톤 색) |
 | `ui/status-badge` | `StatusBadge`(ok·warn·bad·off·info)·`toneFill` — `ui/badge` 위 톤 매핑 |
 | `ui/panel` | `PanelHead`(제목+동작)·`RowCount`(목록 건수) |
+| `ui/split-layout` | `SplitLayout`(좌 목록/우 상세, 폭 기억 + 좁은 화면 서랍)·`Pane`(패널 여백). 머리줄에서 여닫으려면 `layoutRef` |
+| `ui/theme-provider` | `ThemeProvider({ theme, children })` — theme 를 `<html class="dark">` 로. `themeBootScript(키)` 는 FOUC 방지 `<head>` 스크립트 |
 
 `ui/CommonModal` 은 `footer` props 로 규격화된 바닥 버튼 줄을 받는다(안 주면 종전과 동일).
 

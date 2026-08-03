@@ -2,6 +2,37 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.12.0
+
+소비 앱 두 곳(ai-insight 어드민·git-worktree-nextjs)이 **각자 만들어 쓰던 같은 물건 둘**을 올린다.
+둘 다 새 서브패스라 기존 소비자에게 미치는 영향은 없다.
+
+- `ui/split-layout` 신설 — `SplitLayout`(좌 목록/우 상세 분할)·`Pane`·`SplitLayoutHandle`.
+  폭은 드래그로 조절하고 `storageKey` 로 화면마다 기억하며(localStorage `split:<key>`),
+  좁은 화면에서는 왼쪽을 `Sheet` 서랍으로 연다. ai-insight 판이 뼈대이고
+  **호출부는 그대로 옮겨온다**(`storageKey`·`defaultSize`·`leftTitle`·`children:[left,right]`).
+  worktree 는 같은 조립을 화면 7개에 복붙한 채 폭 저장이 없고 `usePanelRef()` +
+  `matchMedia("(max-width: 767px)")` 감시 + `collapse()` 를 화면마다 다시 짜고 있었다 —
+  그쪽이 필요로 하던 것을 옵션으로 흡수했다:
+  - `layoutRef` — 바깥(머리줄 버튼)에서 여닫는 손잡이(`toggle`/`open`/`close`/`isClosed`).
+    **주면 왼쪽이 접히는 패널이 되고, 안 주면 종전(최소 폭에서 멈춤) 그대로다.**
+    넓은 화면=패널 접기 / 좁은 화면=서랍 닫기를 `toggle()` 하나가 알아서 고른다 —
+    화면이 matchMedia 분기를 다시 적을 필요가 없다
+  - `showNarrowToggle`(기본 true) — 좁은 화면 기본 [목록] 버튼. 화면이 자기 머리줄에
+    이미 여닫기 버튼을 두고 있으면 꺼서 버튼이 둘 되는 걸 막는다
+  - `mobileBreakpoint`(기본 767)·`leftMinSize`(15)·`rightMinSize`(25)·`leftClassName`·`rightClassName`
+  - **브레이크포인트는 767px 로 통일**했다. 두 앱이 갈려 있었다(한쪽 훅은 767px,
+    다른 쪽 공용 훅은 640px 인데 화면들은 767px 을 인라인으로 씀). 실제로 쓰이던 값이 767px 이다
+  - 저장 규칙을 하나 조였다 — 접힌 값(0)·끝까지 민 값은 기억하지 않는다.
+    다음 방문에 목록이 사라져 있으면 화면이 고장 난 것으로 보인다
+- `ui/theme-provider` 신설 — `ThemeProvider({ theme, children })`·`themeBootScript(storageKey)`·`Theme`.
+  두 앱에 본문이 사실상 같은 파일이 두 벌 있었고 둘 다 theme 를 **자기 zustand store 에서
+  직접 읽어** kit 으로 올릴 수 없는 모양이었다. store 의존을 끊고 값만 props 로 받는다 —
+  앱은 자기 store 에서 읽어 넘긴다.
+  `themeBootScript()` 는 두 앱이 layout.tsx 에 각자 적어 두던 FOUC 방지 `<head>` 인라인
+  스크립트를 만들어 준다. 두 앱의 스크립트가 **localStorage 키만 다르고 나머지가 같아서**
+  키 하나만 받으면 된다(zustand persist 의 `{state:{theme}}` 와 맨 위 `{theme}` 둘 다 읽는다)
+
 ## 0.11.0
 
 - `ui/filter-bar` 에 `FilterCheck` 추가 — 조회줄 안의 켬/끔 조건("사용중만"·"활성만").
