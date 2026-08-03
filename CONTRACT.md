@@ -28,7 +28,7 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 ### 공개 계약 — 깨면 소비자 파손
 
 - **서브패스 export 맵**: `.` `./api` `./hooks` `./core` `./ui/*`
-  `./ui/utils` `./shell` `./route-shell` — 경로 제거·이름 변경 금지
+  `./ui/utils` `./styles/*` `./shell` `./route-shell` — 경로 제거·이름 변경 금지
 - `api`: `get/post/buildUrl/sseUrl/login/logout/getToken/getRole`,
   `API_BASE`, `ApiError` + env (`NEXT_PUBLIC_API_BASE*`,
   `NEXT_PUBLIC_API_BASE_STORAGE_KEY`) + 오류 판정 의미
@@ -37,6 +37,20 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
   `ResolvedSource`/`TransportEvents`/`EventStream*` 타입 모양
 - `hooks`: `useLocalStorage`, `useDebounce`, `useEventStream` 시그니처
 - `ui/*`: 각 프리미티브의 **props** (내부 구현·클래스는 내부)
+  - 운영 화면 조립 프리미티브(0.9.0~)의 export 이름도 계약이다:
+    `ui/modal`(`FormModal`·`ViewModal`·`Section`·`DescList`·`ModalSize`),
+    `ui/use-confirm`(`useConfirm` 이 돌려주는 `{ confirm, dialog }` 모양·`ConfirmAsk`),
+    `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
+    `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`),
+    `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
+    `ui/panel`(`PanelHead`·`RowCount`)
+  - **기본 문구는 계약이다** — 한국어 기본값("저장"·"취소"·"닫기"·
+    "불러오는 중…"·"불러오지 못했습니다 — ")을 바꾸지 않는다. 바꿔야 하면
+    소비자가 optional props 로 덮어쓴다
+- `styles/*`: 배포 CSS 파일 경로와 그 안에서 **정의하는 변수 이름**
+  - `styles/tokens.css` → `--success`·`--warning` (+ tailwind `--color-*` 매핑).
+    `ui/status-badge` 의 ok·warn 톤과 `ui/progress` 가 이 이름에 의존한다.
+    소비자는 전역 CSS 에서 `@import "@sv/kit-ui/styles/tokens.css";` 로 가져간다
 - `shell`: `LayoutApp`/`NavHeaderFrame`/`NavMenuModal`/`CommandPalette`
   props, `useTabStore`/`TabProvider`/`useTabId`/`useSidebarToggleStore`
 - `route-shell`: `createRouteTabsStore(key)`/`createUiStore(key)` 가

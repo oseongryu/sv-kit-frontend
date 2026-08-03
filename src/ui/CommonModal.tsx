@@ -43,13 +43,20 @@ interface CommonModalProps {
   preventClose?: boolean;
   /** 열릴 때 콜백 */
   onOpen?: () => void;
+  /**
+   * 바닥 버튼 줄 — 주면 규격화된 줄(우측 정렬·간격)에 담긴다.
+   *
+   * 소비자가 매번 `flex justify-end gap-2` 를 손으로 그리면 여백이 한 곳씩 빠진다.
+   * **안 주면 아무것도 그리지 않는다** — 기존 호출부는 그대로 동작한다.
+   */
+  footer?: ReactNode;
   children: ReactNode;
 }
 
 export function CommonModal({
   open, onClose, title, size = "md",
   position = "center",
-  headerActions, className, preventClose, onOpen, children,
+  headerActions, className, preventClose, onOpen, footer, children,
 }: CommonModalProps) {
   const sizeClass = SIZE[size as SizeKey] || size;
   const positionClass = POSITION_CLASS[position] ?? "";
@@ -77,6 +84,12 @@ export function CommonModal({
               </div>
             </DialogHeader>
             {children}
+            {/* headerActions 모드는 본문이 p-0 이라 바닥 줄이 자기 여백·구분선을 갖는다 */}
+            {footer ? (
+              <div className="flex shrink-0 items-center justify-end gap-2 border-t border-border px-4 py-2.5">
+                {footer}
+              </div>
+            ) : null}
           </>
         ) : (
           <>
@@ -84,6 +97,9 @@ export function CommonModal({
               <DialogTitle>{title}</DialogTitle>
             </DialogHeader>
             {children}
+            {footer ? (
+              <div className="flex justify-end gap-2 pt-1">{footer}</div>
+            ) : null}
           </>
         )}
       </DialogContent>

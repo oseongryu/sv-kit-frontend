@@ -33,9 +33,42 @@ transpilePackages: ["@sv/kit-ui"],
 | `@sv/kit-ui/api` | `get/post/buildUrl/sseUrl/login/logout`, `API_BASE`, `ApiError` |
 | `@sv/kit-ui/core` | `makeTransport` 주입형 전송(멀티서버·SSE) |
 | `@sv/kit-ui/hooks` | `useLocalStorage`·`useDebounce`·`useEventStream` |
-| `@sv/kit-ui/ui/*` | shadcn 계열 프리미티브 + `ui/utils`(cn) |
+| `@sv/kit-ui/ui/*` | shadcn 계열 프리미티브 + 운영 화면 조립 프리미티브 + `ui/utils`(cn) |
+| `@sv/kit-ui/styles/*` | 배포 CSS — 지금은 `styles/tokens.css`(상태색 토큰) 하나 |
 | `@sv/kit-ui/shell` | `LayoutApp`·`NavHeaderFrame`·`NavMenuModal`·`CommandPalette`·탭 스토어 |
 | `@sv/kit-ui/route-shell` | 라우트 탭 셸(`RouteAppShell`·`RouteTabBar`·`SplitPane`·스토어 팩토리) |
+
+## 운영 화면 조립 프리미티브 (0.9.0~)
+
+shadcn 계열 낱개 프리미티브 위에, 운영 화면이 매번 같은 모양으로 반복하던
+조합을 올린 것들. 문구는 한국어가 기본값이고 전부 optional props 로 덮어쓴다.
+
+| import | 역할 |
+|---|---|
+| `ui/modal` | `FormModal`(넣고 저장)·`ViewModal`(보기)·`Section`·`DescList` — 팝업은 이 셋 중 하나다 |
+| `ui/use-confirm` | `const { confirm, dialog } = useConfirm()` — `await confirm({…})` / `confirm({…, run})` |
+| `ui/table-scroll` | 표 스크롤 영역 — 표가 하나면 `fill`, 둘 이상이면 `max`(기본 40vh). thead 붙박이 |
+| `ui/table-state` | 목록의 오류→로딩→빈 3분기 행 (셋 다 아니면 `null`) |
+| `ui/form-field` | `FormField`(라벨+컨트롤, 높이·폭 강제)·`CheckField` |
+| `ui/filter-bar` | 조회조건 한 줄 — 안의 컨트롤을 내용 폭·h-7 로 되돌린다 |
+| `ui/progress` | 진행바 (0–100 클램프, 톤 색) |
+| `ui/status-badge` | `StatusBadge`(ok·warn·bad·off·info)·`toneFill` — `ui/badge` 위 톤 매핑 |
+| `ui/panel` | `PanelHead`(제목+동작)·`RowCount`(목록 건수) |
+
+`ui/CommonModal` 은 `footer` props 로 규격화된 바닥 버튼 줄을 받는다(안 주면 종전과 동일).
+
+### 상태색 토큰 (필수 — 안 하면 색이 조용히 안 나온다)
+
+kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 톤**과
+`Progress` 는 표준에 없는 `--success`·`--warning` 을 쓴다. 소비 앱 전역 CSS 에
+한 줄 넣는다 (tailwind v4 기준, `@import "tailwindcss"` 뒤):
+
+```css
+@import "@sv/kit-ui/styles/tokens.css";
+```
+
+라이트/다크 값(oklch)과 tailwind `@theme inline` 매핑이 함께 들어 있다.
+앱 팔레트에 맞추려면 이 import 뒤 `:root`/`.dark` 에서 두 변수만 덮어쓰면 된다.
 
 ## 릴리스
 
