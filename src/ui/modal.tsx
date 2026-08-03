@@ -17,7 +17,10 @@ import type { ReactNode } from "react";
 
 import { Button } from "./button";
 import { CommonModal } from "./CommonModal";
-import { cn } from "./utils";
+
+// 카드·라벨값은 화면에서도 쓰므로 ui/section 이 갖는다. 여기서 다시 내보내
+// 기존 `ui/modal` import 를 그대로 살린다(계약 유지).
+export { Section, DescList } from "./section";
 
 /** `CommonModal` 의 사이즈 프리셋과 같은 축 */
 export type ModalSize =
@@ -32,48 +35,6 @@ export type ModalSize =
   | "6xl"
   | "full";
 
-/** 팝업 본문의 한 덩어리 — 제목이 붙은 카드. 내용이 둘 이상이면 이걸로 나눈다 */
-export function Section({
-  title,
-  children,
-  className,
-}: {
-  /** 없으면 제목 줄 없이 테두리만 */
-  title?: ReactNode;
-  children: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("border-border rounded border p-3", className)}>
-      {title ? (
-        <div className="text-muted-foreground mb-1 text-xs">{title}</div>
-      ) : null}
-      {children}
-    </div>
-  );
-}
-
-/** 라벨-값 목록 — 메타 정보를 가운뎃점으로 이어 붙이면 빈 값이 점만 남는다 */
-export function DescList({
-  items,
-  placeholder = "—",
-}: {
-  items: [ReactNode, ReactNode][];
-  /** 값이 비었을 때 대신 그릴 것 — 칸을 비워 두면 줄이 어긋난다 */
-  placeholder?: ReactNode;
-}) {
-  return (
-    <dl className="text-muted-foreground grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-xs">
-      {items.map(([k, v], i) => (
-        <div key={i} className="contents">
-          <dt>{k}</dt>
-          <dd className="text-foreground">{v || placeholder}</dd>
-        </div>
-      ))}
-    </dl>
-  );
-}
-
 /** 값을 넣고 저장하는 팝업. 바닥은 [취소][저장] 으로 고정된다 */
 export function FormModal({
   open,
@@ -84,6 +45,7 @@ export function FormModal({
   submitLabel = "저장",
   cancelLabel = "취소",
   busyLabel,
+  onCancel,
   onSubmit,
   children,
 }: {
@@ -98,6 +60,10 @@ export function FormModal({
   cancelLabel?: string;
   /** 진행 중 문구. 없으면 `{submitLabel} 중…` — 실행·전송 팝업에서 "저장 중…"이면 어색하다 */
   busyLabel?: string;
+  /** 왼쪽 버튼이 누를 때 할 일. 없으면 `onClose`(닫기).
+   *  단계가 있는 폼에서 "이전 단계로" 처럼 **닫는 것이 아닌** 동작이 필요할 때 준다 —
+   *  라벨만 바꿀 수 있으면 그런 팝업은 이 껍데기를 못 쓰고 직접 그리게 된다 */
+  onCancel?: () => void;
   onSubmit: () => void;
   children: ReactNode;
 }) {
@@ -110,7 +76,12 @@ export function FormModal({
       preventClose={busy}
       footer={
         <>
-          <Button size="sm" variant="outline" disabled={busy} onClick={onClose}>
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={busy}
+            onClick={onCancel ?? onClose}
+          >
             {cancelLabel}
           </Button>
           <Button size="sm" disabled={busy} onClick={onSubmit}>
@@ -162,7 +133,9 @@ export function ViewModal({
       size={size}
       footer={
         <>
-          {actions}
+          {/* 본문이 아직 없거나 실패했으면 그 내용에 걸린 동작(내려받기 등)도
+              쓸 데가 없다 — 닫기만 남긴다 */}
+          {error || loading ? null : actions}
           <Button size="sm" variant="outline" onClick={onClose}>
             {closeLabel}
           </Button>

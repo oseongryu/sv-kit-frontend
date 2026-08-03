@@ -25,6 +25,8 @@ transpilePackages: ["@sv/kit-ui"],
 ```
 
 단독 소비 예제: [`examples/minimal`](examples/minimal) — 백엔드 짝 없이 api·훅만 시연.
+프리미티브 전시장: [`examples/ui-gallery`](examples/ui-gallery) — 운영 화면 조립 프리미티브를
+실제로 열어 보고 코드를 복붙한다(tailwind 토큰·`@source` 설정 본보기 포함).
 
 ## 서브패스
 

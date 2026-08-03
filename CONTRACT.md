@@ -38,7 +38,9 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 - `hooks`: `useLocalStorage`, `useDebounce`, `useEventStream` 시그니처
 - `ui/*`: 각 프리미티브의 **props** (내부 구현·클래스는 내부)
   - 운영 화면 조립 프리미티브(0.9.0~)의 export 이름도 계약이다:
-    `ui/modal`(`FormModal`·`ViewModal`·`Section`·`DescList`·`ModalSize`),
+    `ui/modal`(`FormModal`·`ViewModal`·`ModalSize`, 그리고 `ui/section` 의 둘을 재export),
+    `ui/section`(`Section`·`DescList` — 0.10.0 에서 `ui/modal` 에서 갈라냈다.
+    **`ui/modal` 쪽 재export 를 지우면 기존 소비자가 깨진다**),
     `ui/use-confirm`(`useConfirm` 이 돌려주는 `{ confirm, dialog }` 모양·`ConfirmAsk`),
     `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
     `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`),

@@ -2,6 +2,28 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.10.0
+
+0.9.0 프리미티브를 소비 앱(ai-insight)과 `examples/ui-gallery` 에 실제로 물려 보며
+드러난 것들을 고친다. 전부 additive 이거나 버그 수정이다.
+
+- `ui/section` 신설 — `Section`·`DescList` 를 `ui/modal` 에서 분리. 팝업 밖 화면 카드로도
+  쓰는데 `ui/modal` 에서 받아 오면 읽는 사람이 팝업을 찾게 된다.
+  `ui/modal` 이 둘을 그대로 다시 내보내므로 **기존 import 는 그대로 산다**
+- `ui/modal` `FormModal` 에 `onCancel` 추가 — 왼쪽 버튼이 항상 `onClose` 라,
+  단계가 있는 폼("이전 단계로")은 이 껍데기를 못 쓰고 바닥 줄을 직접 그려야 했다.
+  주지 않으면 종전대로 닫기다
+- `ui/modal` `DescList` 버그 수정 — `v || placeholder` 라 값이 `0`·`false`·빈 문자열이면
+  실제 값 대신 `—` 가 나왔다(건수·회차 같은 숫자 메타에서 걸린다)
+- `ui/modal` `ViewModal` 버그 수정 — `loading`·`error` 일 때 `actions`(내려받기 등)를
+  바닥에 그대로 그렸다. 본문이 없는데 동작 버튼만 살아 있었다
+- `ui/filter-bar` 버그 수정 — `[&_input]:h-7` 이 체크박스에도 걸려 조회줄에 체크박스를
+  넣으면 네모 칸이 28px 로 늘어났다. `ui/form-field` 와 같은 `:not([type=checkbox])` 예외를 둔다
+- `ui/progress` 버그 수정 — `value` 가 NaN 이면 `width: NaN%` 로 막대가 사라졌다. 0 으로 떨어뜨린다
+- `ui/use-confirm` 주석 보강 — `run` 은 기다리지 않는다(반환 promise 는 "일이 끝났다"가
+  아니라 "확인을 눌렀다"로 풀린다)는 것을 명시
+- `examples/ui-gallery` 추가 — 팝업 3종·패널 뼈대·상태 조각을 실제로 열어 보고 복붙하는 예제 앱
+
 ## 0.9.0
 
 운영 화면 조립 프리미티브 9종 흡수 — 소비 앱(ai-insight 어드민)에서 화면마다

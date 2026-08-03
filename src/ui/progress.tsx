@@ -27,7 +27,10 @@ export function Progress({
   className?: string;
 }) {
   const total = max > 0 ? max : 100;
-  const pct = Math.min(100, Math.max(0, (value / total) * 100));
+  // NaN 은 Math.min/max 를 그대로 통과해 `width: NaN%` 가 된다(막대가 사라진다).
+  // 아직 안 받아온 값이 NaN 으로 들어오는 일이 잦아 0 으로 떨어뜨린다.
+  const raw = (value / total) * 100;
+  const pct = Number.isFinite(raw) ? Math.min(100, Math.max(0, raw)) : 0;
   return (
     <div
       className={cn("bg-secondary h-2 w-full overflow-hidden rounded", className)}

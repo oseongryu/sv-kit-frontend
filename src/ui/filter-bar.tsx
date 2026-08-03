@@ -24,8 +24,13 @@ export function FilterBar({
         // shrink-0 — 패널이 flex-col 이라 이 줄이 눌리면 컨트롤이 찌그러진다
         "mb-2 flex shrink-0 flex-wrap items-center gap-1.5",
         // 폼 기본(w-full)을 필터 줄에서만 내용 폭으로 되돌린다
-        "[&_input]:h-7 [&_input]:w-auto [&_select]:h-7 [&_select]:w-auto [&_select]:min-w-[7rem]",
-        "[&_button]:h-7 [&_input]:text-xs [&_select]:text-xs",
+        // 체크박스·라디오는 뺀다 — 높이를 강제하면 네모 칸이 28px 로 늘어난다
+        // (`form-field` 도 같은 예외를 둔다)
+        "[&_input:not([type=checkbox]):not([type=radio])]:h-7",
+        "[&_input:not([type=checkbox]):not([type=radio])]:w-auto",
+        "[&_input:not([type=checkbox]):not([type=radio])]:text-xs",
+        "[&_select]:h-7 [&_select]:w-auto [&_select]:min-w-[7rem] [&_select]:text-xs",
+        "[&_button]:h-7",
         className,
       )}
     >
