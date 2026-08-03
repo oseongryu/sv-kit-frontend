@@ -2,6 +2,16 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.7.0
+
+- `ui/select` 추가 — 네이티브 `<select>` 에 kit 스타일만 입힌 프리미티브.
+  소비 앱들이 `className="border-input bg-card h-8 …"` 을 화면마다 복붙하고 있었다
+  (ai-insight 어드민 32곳). props 는 `<select>` 그대로라 한 줄 치환으로 옮긴다
+- `ui/table` 추가 — `Table`·`TableHead`·`TableBody`·`TableRow`·`TableHeaderCell`·`TableCell`.
+  전역 CSS(`table { … }`)로 칠하던 것을 컴포넌트로. `TableRow` 는 `selected`
+  props 와 `onClick` 유무로 고를 수 있는 행을 표현한다
+- 둘 다 additive — 기존 서브패스·props 변경 없음
+
 ## 0.6.1
 
 - 구조 정리 (내부 전용 — 서브패스 import 경로·공개 API 변경 없음)
