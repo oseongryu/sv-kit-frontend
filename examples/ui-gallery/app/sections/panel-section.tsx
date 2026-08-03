@@ -7,7 +7,7 @@
 
 import { useState } from "react";
 import { Button } from "@sv/kit-ui/ui/button";
-import { FilterBar } from "@sv/kit-ui/ui/filter-bar";
+import { FilterBar, FilterCheck } from "@sv/kit-ui/ui/filter-bar";
 import { Input } from "@sv/kit-ui/ui/input";
 import { Section } from "@sv/kit-ui/ui/modal";
 import { PanelHead, RowCount } from "@sv/kit-ui/ui/panel";
@@ -46,9 +46,13 @@ const ROWS: { id: number; name: string; tone: Tone; label: string; done: number 
 export function PanelSection() {
   const [q, setQ] = useState("");
   const [only, setOnly] = useState("all");
+  const [running, setRunning] = useState(false);
 
   const rows = ROWS.filter(
-    (r) => (only === "all" || r.tone === only) && r.name.includes(q.trim()),
+    (r) =>
+      (only === "all" || r.tone === only) &&
+      (!running || r.tone === "info") &&
+      r.name.includes(q.trim()),
   );
 
   return (
@@ -85,6 +89,9 @@ export function PanelSection() {
               <option value="warn">주의만</option>
               <option value="bad">실패만</option>
             </Select>
+            {/* 조회줄의 켬/끔 조건은 FilterCheck — 폼용 CheckField 를 넣으면
+                줄이 높아지고 글자가 튄다 */}
+            <FilterCheck label="진행중만" checked={running} onChange={setRunning} />
             <Button size="sm">검색</Button>
             <RowCount>총 {rows.length}건</RowCount>
           </FilterBar>

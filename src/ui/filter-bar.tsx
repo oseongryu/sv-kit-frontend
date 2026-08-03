@@ -9,6 +9,7 @@
 
 import type { ReactNode } from "react";
 
+import { Checkbox } from "./checkbox";
 import { cn } from "./utils";
 
 export function FilterBar({
@@ -36,5 +37,42 @@ export function FilterBar({
     >
       {children}
     </div>
+  );
+}
+
+/**
+ * 조회줄 안의 켬/끔 조건 — "사용중만"·"활성만" 처럼 목록을 좁히는 체크 한 칸.
+ *
+ * `form-field` 의 `CheckField` 는 **폼용**이다. 라벨 줄만큼 자리를 비워 옆 칸
+ * 인풋과 바닥선을 맞추고 글자도 폼 크기라, 조회줄에 넣으면 줄이 높아지고 글자가
+ * 튄다. 조회줄은 한 줄에 붙어야 하고 글자는 `text-xs` 다.
+ *
+ * 네모는 `ui/checkbox`(base-ui)를 쓴다 — 네이티브 체크박스는 브라우저마다 크기·색이
+ * 달라 다크 모드에서 튄다.
+ */
+export function FilterCheck({
+  label,
+  checked,
+  onChange,
+  className,
+}: {
+  label: ReactNode;
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  className?: string;
+}) {
+  return (
+    <label
+      className={cn(
+        "text-muted-foreground flex cursor-pointer items-center gap-1.5 text-xs",
+        className,
+      )}
+    >
+      <Checkbox
+        checked={checked}
+        onCheckedChange={(value) => onChange(value === true)}
+      />
+      {label}
+    </label>
   );
 }

@@ -2,6 +2,14 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.11.0
+
+- `ui/filter-bar` 에 `FilterCheck` 추가 — 조회줄 안의 켬/끔 조건("사용중만"·"활성만").
+  `form-field` 의 `CheckField` 는 폼용이라 라벨 줄만큼 자리를 비우고 글자도 폼 크기여서
+  조회줄에 넣으면 줄이 높아지고 글자가 튄다. 소비 앱들이 같은
+  `<label class="… text-xs"><Checkbox/>…</label>` 를 화면마다 손으로 적고 있었다
+  (ai-insight 어드민 3곳). 네모는 `ui/checkbox`(base-ui)를 쓴다
+
 ## 0.10.0
 
 0.9.0 프리미티브를 소비 앱(ai-insight)과 `examples/ui-gallery` 에 실제로 물려 보며

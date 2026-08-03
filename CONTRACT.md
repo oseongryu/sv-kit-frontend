@@ -43,7 +43,7 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
     **`ui/modal` 쪽 재export 를 지우면 기존 소비자가 깨진다**),
     `ui/use-confirm`(`useConfirm` 이 돌려주는 `{ confirm, dialog }` 모양·`ConfirmAsk`),
     `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
-    `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`),
+    `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`·`FilterCheck`),
     `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
     `ui/panel`(`PanelHead`·`RowCount`)
   - **기본 문구는 계약이다** — 한국어 기본값("저장"·"취소"·"닫기"·
