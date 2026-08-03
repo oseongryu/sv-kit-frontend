@@ -46,6 +46,10 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
     `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`·`FilterCheck`),
     `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
     `ui/panel`(`PanelHead`·`RowCount`),
+    `ui/split-layout`(`SplitLayout`·`Pane`·`SplitLayoutHandle`),
+    `ui/theme-provider`(`ThemeProvider`·`Theme`),
+    `ui/theme-boot`(`themeBootScript`·`DARK_CLASS` — 클라이언트 지시자 없는 모듈이어야 한다.
+    서버 레이아웃이 부른다),
     `ui/split-layout`(0.12.0~ — `SplitLayout`·`Pane`·`SplitLayoutHandle`.
     `children` 이 `[왼쪽, 오른쪽]` 두 칸 튜플인 것과 폭 저장 키
     `split:<storageKey>` 가 계약이다. `layoutRef` 를 안 주면 왼쪽은 접히지 않는다 —

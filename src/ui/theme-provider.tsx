@@ -14,10 +14,9 @@
 
 import { useEffect, type ReactNode } from "react";
 
-export type Theme = "light" | "dark";
+import { DARK_CLASS } from "./theme-boot";
 
-/** 다크일 때 `<html>` 에 붙는 클래스 — 부팅 스크립트도 같은 이름을 쓴다 */
-const DARK_CLASS = "dark";
+export type Theme = "light" | "dark";
 
 export function ThemeProvider({ theme, children }: { theme: Theme; children: ReactNode }) {
   useEffect(() => {
@@ -27,23 +26,8 @@ export function ThemeProvider({ theme, children }: { theme: Theme; children: Rea
   return <>{children}</>;
 }
 
-/**
- * FOUC 방지용 `<head>` 인라인 스크립트 문자열.
- *
- * ```tsx
- * <head>
- *   <script dangerouslySetInnerHTML={{ __html: themeBootScript(STORAGE_KEY) }} />
- * </head>
- * ```
- *
- * `storageKey` 는 **앱이 테마를 넣어 둔 localStorage 키**다(zustand persist 의
- * `name`). 값의 모양은 zustand persist 의 `{state:{theme}}` 와 맨 위에 그냥
- * `{theme}` 인 경우를 둘 다 읽는다 — 소비 앱 둘이 실제로 그렇게 적어 두었고,
- * persist 버전이 바뀌어도 조용히 살아남게 하려는 것이다.
- *
- * 읽기에 실패하면(키 없음·JSON 깨짐) 아무 것도 하지 않는다. 부팅 스크립트가
- * 던지는 예외는 그 뒤 문서 전체를 멈추므로 삼키는 편이 낫다.
- */
-export function themeBootScript(storageKey: string): string {
-  return `(function(){try{var r=localStorage.getItem(${JSON.stringify(storageKey)});if(!r)return;var s=JSON.parse(r);var t=(s&&s.state&&s.state.theme)||s.theme;if(t==='dark')document.documentElement.classList.add('${DARK_CLASS}');}catch(e){}})();`;
-}
+// 부팅 스크립트는 서버 레이아웃이 부르는 것이라 클라이언트 지시자가 없는
+// `ui/theme-boot` 이 갖는다. 여기서 다시 내보내 기존 import 를 살리되,
+// **서버 컴포넌트에서는 `ui/theme-boot` 에서 직접 받아야 한다**(이 파일은
+// `"use client"` 라 서버에서 부르면 빌드가 깨진다).
+export { themeBootScript } from "./theme-boot";

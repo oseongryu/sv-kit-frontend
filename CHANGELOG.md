@@ -2,6 +2,17 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.12.1
+
+- `ui/theme-boot` 신설 — `themeBootScript` 를 클라이언트 경계 **밖**으로 뺐다.
+  이 스크립트는 첫 페인트 전에 `<head>` 에서 동기로 돌아야 해서 서버 컴포넌트가
+  문자열을 박아 넣는데, 0.12.0 은 `"use client"` 인 `ui/theme-provider` 에만 있어
+  서버 레이아웃에서 부르면 빌드가 깨졌다(소비 앱에서 확인).
+  `ui/theme-provider` 도 계속 재export 하므로 기존 import 는 그대로 산다 —
+  **서버에서는 `ui/theme-boot` 에서 직접 받는다**
+- `exports` 에 `./ui/theme-boot` 추가 — `./ui/*` 와일드카드는 `*.tsx` 만 잡는다
+  (`./ui/utils` 와 같은 개별 지정)
+
 ## 0.12.0
 
 소비 앱 두 곳(ai-insight 어드민·git-worktree-nextjs)이 **각자 만들어 쓰던 같은 물건 둘**을 올린다.
