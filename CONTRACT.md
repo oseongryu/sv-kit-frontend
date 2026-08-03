@@ -36,6 +36,9 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 - `core`: `makeTransport(resolve, events)` 와 `Transport`/
   `ResolvedSource`/`TransportEvents`/`EventStream*` 타입 모양
 - `hooks`: `useLocalStorage`, `useDebounce`, `useEventStream` 시그니처
+- `i18n`: `createI18n(opts)` 가 돌려주는 **네 가지 모양**
+  (`useI18nStore`·`t`·`useT`·`hydrateI18n`)과 `I18nOptions` 키 이름.
+  사전은 소비 앱이 갖는다 — kit 은 사전을 배포하지 않는다
 - `ui/*`: 각 프리미티브의 **props** (내부 구현·클래스는 내부)
   - 운영 화면 조립 프리미티브(0.9.0~)의 export 이름도 계약이다:
     `ui/modal`(`FormModal`·`ViewModal`·`ModalSize`, 그리고 `ui/section` 의 둘을 재export),

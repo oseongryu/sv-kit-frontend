@@ -2,6 +2,16 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.17.0
+
+- `i18n` 서브패스 신설 — `createI18n({ translations, defaultLocale, fallbackLocale?, storageKey? })` 가
+  그 앱 전용 `{ useI18nStore, t, useT, hydrateI18n }` 한 벌을 만들어 준다.
+  **사전은 앱이 갖는다** — 그 앱의 도메인 낱말이라 공통으로 올릴 물건이 아니다(소비 앱의
+  사전이 800줄인데 전부 그 앱 화면 이름이었다). 반면 "고른 말을 기억하고 · 키를 문장으로
+  바꾸고 · 바뀌면 다시 그리는" 부분은 앱마다 똑같이 다시 짜게 된다
+- 키 타입이 사전에서 따라오므로 **앱에서 없는 키를 쓰면 컴파일이 막힌다**.
+  `shell` 의 `NavHeaderFrame` 이 요구하는 `locale`·`onToggleLocale` 에 그대로 물린다
+
 ## 0.16.0
 
 - `ui/pagination` 신설 — `Pagination({ page, totalPages, onChange, siblings? })`.
