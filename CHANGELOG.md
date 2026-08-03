@@ -2,6 +2,14 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.16.0
+
+- `ui/pagination` 신설 — `Pagination({ page, totalPages, onChange, siblings? })`.
+  소비 앱이 손으로 적던 쪽 넘김을 올린다. **그 구현들은 쪽 번호를
+  `Math.min(totalPages, 10)` 로 그려 11쪽 이후로 갈 방법이 아예 없었다**(실제 결함).
+  여기서는 현재 쪽 둘레만 펼치고 처음·끝을 남긴 뒤 사이를 `…` 로 접는다.
+  자리는 표 **아래**다 — 위에만 두면 마지막 행을 보고 다시 올라가야 한다
+
 ## 0.15.0
 
 껍데기(`FormModal`·`ViewModal`)가 `CommonModal` 의 쓸모 있는 props 를 **가리고 있었다.**

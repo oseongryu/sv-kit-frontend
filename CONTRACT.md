@@ -45,7 +45,7 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
     `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
     `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`·`FilterCheck`),
     `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
-    `ui/panel`(`PanelHead`·`RowCount`),
+    `ui/panel`(`PanelHead`·`RowCount`), `ui/pagination`(`Pagination`),
     `ui/split-layout`(`SplitLayout`·`Pane`·`SplitLayoutHandle`),
     `ui/theme-provider`(`ThemeProvider`·`Theme`),
     `ui/theme-boot`(`themeBootScript`·`DARK_CLASS` — 클라이언트 지시자 없는 모듈이어야 한다.
