@@ -12,17 +12,19 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 
 ## 사용 (프로젝트 쪽)
 
-`npm pack` 산출 tgz 를 소비 프로젝트 `vendor/` 에 동봉해 고정한다.
+GitHub 태그 tarball 로 버전을 고정해 설치한다 (로컬 개발은 `file:` 경로).
 
 ```jsonc
 // package.json
-{ "dependencies": { "@sv/kit-ui": "file:./vendor/sv-kit-ui-0.6.0.tgz" } }
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.6.1.tar.gz" } }
 ```
 
 ```ts
 // next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
 transpilePackages: ["@sv/kit-ui"],
 ```
+
+단독 소비 예제: [`examples/minimal`](examples/minimal) — 백엔드 짝 없이 api·훅만 시연.
 
 ## 서브패스
 
@@ -39,7 +41,7 @@ transpilePackages: ["@sv/kit-ui"],
 
 버전은 semver. 브레이킹 체인지 시 minor(0.x 동안) 승격 + 아래 동기화 필수:
 
-1. `package.json` version
-2. `git tag ui-v<버전>`
-3. `npm pack` → sv-agent-team `skeletons/base/frontend/vendor/` 교체
+1. `package.json` version + CHANGELOG
+2. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
+3. 소비자 package.json 의 tarball URL 태그 갱신 (스켈레톤 base 포함)
 4. sv-agent-team `SKELETON_IMPL.md` 를 같은 내용으로 갱신 (에이전트용 스펙)

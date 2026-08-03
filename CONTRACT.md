@@ -58,12 +58,12 @@ git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
 
 | 축 | 배포물 | 소비자 반영 |
 |---|---|---|
-| @sv/kit-ui | `frontend/vendor/sv-kit-ui-X.Y.Z.tgz` | tgz 교체 + package.json 갱신 |
+| @sv/kit-ui | GitHub 태그 `ui-vX.Y.Z` (tarball) | package.json 의 태그 URL 갱신 |
 
-- 태그: `ui-vX.Y.Z`
-- **소비 채널은 vendor 고정 하나**: 스켈레톤 생성물·total·git-worktree-nextjs
-  전부 `vendor/sv-kit-ui-X.Y.Z.tgz` 로 소비 (오프라인 자급·워커 안전).
-  kit 수정 반영 = `npm pack` 후 소비자 vendor 교체 + package.json 갱신
-- 소비자는 vendor 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
-  vendor 를 교체하기 전에는 도달하지 않는다. 이것이 breaking 변경의
-  최종 방어선이다.
+- 태그: `ui-vX.Y.Z` — `git push origin main --tags` 가 곧 배포
+- **소비 채널은 GitHub 태그 고정 하나**: 스켈레톤 생성물·total·git-worktree-nextjs
+  전부 package.json 에 `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-vX.Y.Z.tar.gz`
+  로 고정 소비 (public 저장소 — 무인증, git 바이너리 불필요). 로컬 kit 개발은 `file:` 경로
+- 소비자는 태그 URL 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
+  URL 태그를 올리기 전에는 도달하지 않는다. 이것이 breaking 변경의
+  최종 방어선이다. **한 번 push 한 태그는 옮기지 않는다.**
