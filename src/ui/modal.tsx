@@ -47,6 +47,10 @@ export function FormModal({
   busyLabel,
   onCancel,
   onSubmit,
+  headerActions,
+  preventClose,
+  onOpen,
+  className,
   children,
 }: {
   open: boolean;
@@ -65,6 +69,14 @@ export function FormModal({
    *  라벨만 바꿀 수 있으면 그런 팝업은 이 껍데기를 못 쓰고 직접 그리게 된다 */
   onCancel?: () => void;
   onSubmit: () => void;
+  /** 머리줄 오른쪽 — 저장이 바닥이 아니라 헤더에 있는 팝업이 있다.
+   *  주면 `CommonModal` 이 본문 여백을 스스로 관리하는 모드로 바뀐다 */
+  headerActions?: ReactNode;
+  /** 닫기 막기. 기본은 `busy` 일 때만 막는다 */
+  preventClose?: boolean;
+  /** 열릴 때 한 번 */
+  onOpen?: () => void;
+  className?: string;
   children: ReactNode;
 }) {
   return (
@@ -73,7 +85,10 @@ export function FormModal({
       onClose={onClose}
       title={title}
       size={size}
-      preventClose={busy}
+      preventClose={preventClose ?? busy}
+      headerActions={headerActions}
+      onOpen={onOpen}
+      className={className}
       footer={
         <>
           <Button
@@ -107,6 +122,11 @@ export function ViewModal({
   closeLabel = "닫기",
   loadingText = "불러오는 중…",
   errorPrefix = "불러오지 못했습니다 — ",
+  keepActionsOnError,
+  headerActions,
+  preventClose,
+  onOpen,
+  className,
   children,
 }: {
   open: boolean;
@@ -123,6 +143,13 @@ export function ViewModal({
   loadingText?: ReactNode;
   /** 오류 메시지 앞에 붙는 안내 — 서버 문구만 덩그러니 두면 무엇이 실패했는지 안 보인다 */
   errorPrefix?: ReactNode;
+  /** 오류일 때도 `actions` 를 남긴다 — 다시 시도처럼 **실패했을 때 눌러야 하는** 동작이 있다 */
+  keepActionsOnError?: boolean;
+  /** 머리줄 오른쪽 — 내려받기·엔진 선택처럼 본문이 아니라 팝업에 걸린 동작 */
+  headerActions?: ReactNode;
+  preventClose?: boolean;
+  onOpen?: () => void;
+  className?: string;
   children: ReactNode;
 }) {
   return (
@@ -131,11 +158,16 @@ export function ViewModal({
       onClose={onClose}
       title={title}
       size={size}
+      headerActions={headerActions}
+      preventClose={preventClose}
+      onOpen={onOpen}
+      className={className}
       footer={
         <>
           {/* 본문이 아직 없거나 실패했으면 그 내용에 걸린 동작(내려받기 등)도
-              쓸 데가 없다 — 닫기만 남긴다 */}
-          {error || loading ? null : actions}
+              쓸 데가 없다 — 닫기만 남긴다. 다만 '다시 시도'처럼 실패했을 때
+              눌러야 하는 동작이 있는 팝업은 `keepActionsOnError` 로 남긴다 */}
+          {loading || (error && !keepActionsOnError) ? null : actions}
           <Button size="sm" variant="outline" onClick={onClose}>
             {closeLabel}
           </Button>

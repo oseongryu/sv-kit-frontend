@@ -2,6 +2,18 @@
 
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x). 태그는 `ui-v<버전>`.
 
+## 0.15.0
+
+껍데기(`FormModal`·`ViewModal`)가 `CommonModal` 의 쓸모 있는 props 를 **가리고 있었다.**
+그래서 헤더에 동작이 있는 팝업들이 껍데기를 못 쓰고 `CommonModal` 로 남았다
+(소비 앱에서 4곳 확인). 껍데기는 바닥 줄과 본문 뼈대만 책임지고 나머지는 통과시킨다.
+
+- `FormModal`·`ViewModal` 에 `headerActions`·`preventClose`·`onOpen`·`className` 추가
+  - `FormModal.preventClose` 는 안 주면 종전대로 `busy` 를 따른다
+- `ViewModal` 에 `keepActionsOnError` 추가 — 오류일 때 `actions` 를 감추는 것이 기본이지만
+  ("본문이 없는데 동작 버튼만 살아 있다"), **다시 시도처럼 실패했을 때 눌러야 하는 동작**이
+  있는 팝업은 이걸로 남긴다. 0.10.0 의 수정이 그 경우까지 덮고 있었다
+
 ## 0.14.0
 
 `ui/split-layout` 을 실제 소비 앱에 물려 보며 드러난 것들. **0.12.0~0.13.0 의
