@@ -4,3 +4,4 @@ __pycache__/
 build/
 node_modules/
 *.tgz
+examples/*/package-lock.json

@@ -16,7 +16,7 @@ GitHub 태그 tarball 로 버전을 고정해 설치한다 (로컬 개발은 `fi
 
 ```jsonc
 // package.json
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v20260804.2.0.tar.gz" } }
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v20260804.3.0.tar.gz" } }
 ```
 
 ```ts
@@ -83,10 +83,12 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 2. **이 README 상단 설치 예시**와 `examples/*/package.json` 의 태그 URL 갱신 —
    예제도 소비자다. 복붙하는 사람이 옛 판을 받게 된다
 3. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
-4. **태그를 올린 뒤** `examples/*` 에서 `npm install` 로 `package-lock.json` 재생성.
-   lock 은 `integrity` 해시를 함께 담아 URL 만 손으로 고칠 수 없고, 태그가 원격에
-   있어야 설치된다 — 그래서 3번 뒤다. 빠뜨리면 예제에서 `npm ci` 가 실패한다
-5. 소비자 package.json 의 tarball URL 태그 갱신
+4. 소비자 package.json 의 tarball URL 태그 갱신
+
+예제의 `package-lock.json` 은 **버전 관리에서 뺀다**(.gitignore). lock 은 `integrity`
+해시를 담아 URL 만 손으로 고칠 수 없고 **태그가 원격에 올라간 뒤에야** 갱신되는데,
+그 변경을 커밋하려면 또 판을 올려야 하는 순환이 생긴다. 예제는 배포물이 아니라
+복붙용 참고이므로 lock 을 고정할 실익이 없다 — 받는 사람은 `npm install` 로 만든다.
 
 ### 버전 문자열 만들기
 
