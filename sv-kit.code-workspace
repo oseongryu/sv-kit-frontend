@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../sv-kit-backend"
+		},
+		{
+			"path": "../sv-kit-backend-v2"
+		},
+	],
+	"settings": {}
+}
