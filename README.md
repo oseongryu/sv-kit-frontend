@@ -16,7 +16,7 @@ GitHub 태그 tarball 로 버전을 고정해 설치한다 (로컬 개발은 `fi
 
 ```jsonc
 // package.json
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.18.2.tar.gz" } }
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.19.1.tar.gz" } }
 ```
 
 ```ts

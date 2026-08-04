@@ -7,7 +7,7 @@
     "start": "next start"
   },
   "dependencies": {
-    "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.18.2.tar.gz",
+    "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.19.1.tar.gz",
     "next": "^15",
     "react": "^19",
     "react-dom": "^19",

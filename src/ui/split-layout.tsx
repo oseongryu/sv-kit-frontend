@@ -114,8 +114,22 @@ function useIsNarrow(breakpoint: number): boolean {
   return narrow;
 }
 
-/** 저장된 분할 비율 — 없으면 기본값. SSR 에서는 항상 기본값이다. */
-function useSavedLayout(storageKey: string, defaultSize: number) {
+/**
+ * 저장된 분할 비율 — 없거나 화면이 허용하는 범위 밖이면 기본값.
+ * SSR 에서는 항상 기본값이다.
+ *
+ * 범위는 화면이 준 `leftMinSize`·`rightMinSize` 에서 나온다. 저장과 복원이 **같은 자**를
+ * 써야 한다 — 예전엔 양쪽 다 상수 5·95 였는데, 화면은 `leftMinSize={10}` 처럼 더 큰 값을
+ * 주므로 그 사이(6~9%)가 새어 나갔다. 그 값은 저장은 되지만 다음 마운트에서 `minSize`
+ * 미만이라, 접히는 왼쪽 패널이 `collapsedSize=0` 으로 스냅돼 목록이 사라진 것처럼 보였다.
+ * (좁은 화면은 서랍이라 멀쩡하고 넓은 화면에서만 그래서 더 찾기 어려웠다)
+ */
+function useSavedLayout(
+  storageKey: string,
+  defaultSize: number,
+  minLeft: number,
+  maxLeft: number,
+) {
   const key = `split:${storageKey}`;
   const [layout, setLayout] = useState<Record<string, number>>({
     [LEFT_ID]: defaultSize,
@@ -126,21 +140,23 @@ function useSavedLayout(storageKey: string, defaultSize: number) {
     const raw = window.localStorage.getItem(key);
     if (!raw) return;
     const size = Number(raw);
-    if (Number.isFinite(size) && size > 5 && size < 95) {
+    // 범위 밖이면 무시하고 기본값으로 둔다 — 지우지는 않는다. 옛 판이 남긴 값이
+    // 화면 설정(minSize)이 다시 바뀌면 유효해질 수 있고, 무시하는 것만으로 증상은 없다.
+    if (Number.isFinite(size) && size >= minLeft && size <= maxLeft) {
       setLayout({ [LEFT_ID]: size, [RIGHT_ID]: 100 - size });
     }
-  }, [key]);
+  }, [key, minLeft, maxLeft]);
 
   const save = useCallback(
     (next: Record<string, number>) => {
       const size = next[LEFT_ID];
       // 접힌 상태(0)나 끝까지 민 값은 기억하지 않는다 — 다음에 열었을 때
       // 목록이 사라져 있으면 화면이 고장 난 것처럼 보인다
-      if (Number.isFinite(size) && size > 5 && size < 95) {
+      if (Number.isFinite(size) && size >= minLeft && size <= maxLeft) {
         window.localStorage.setItem(key, String(Math.round(size)));
       }
     },
-    [key],
+    [key, minLeft, maxLeft],
   );
 
   return { layout, save };
@@ -166,7 +182,12 @@ export function SplitLayout({
   const [left, right] = children;
   const narrow = useIsNarrow(mobileBreakpoint);
   const [drawer, setDrawer] = useState(false);
-  const { layout, save } = useSavedLayout(storageKey, defaultSize);
+  const { layout, save } = useSavedLayout(
+    storageKey,
+    defaultSize,
+    leftMinSize,
+    100 - rightMinSize,
+  );
   const leftPanel = usePanelRef();
 
   // 접기는 손잡이를 받은 화면만 켠다 — 켜면 최소 폭 아래로 끌었을 때 패널이
