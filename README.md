@@ -16,7 +16,7 @@ GitHub 태그 tarball 로 버전을 고정해 설치한다 (로컬 개발은 `fi
 
 ```jsonc
 // package.json
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.18.0.tar.gz" } }
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v20260804.1.0.tar.gz" } }
 ```
 
 ```ts
@@ -76,9 +76,37 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 
 ## 릴리스
 
-버전은 semver. 브레이킹 체인지 시 minor(0.x 동안) 승격 + 아래 동기화 필수:
+버전은 **날짜 기반(CalVer) `YYYYMMDD.N.0`** 이다 (`20260804.1.0` 부터. 그 전은 semver 0.x).
+발행할 때마다 아래 동기화 필수:
 
 1. `package.json` version + CHANGELOG
-2. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
-3. 소비자 package.json 의 tarball URL 태그 갱신 (스켈레톤 base 포함)
-4. sv-agent-team `SKELETON_IMPL.md` 를 같은 내용으로 갱신 (에이전트용 스펙)
+2. **이 README 상단 설치 예시**와 `examples/*/package.json` 의 태그 URL 갱신 —
+   예제도 소비자다. 복붙하는 사람이 옛 판을 받게 된다
+3. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
+4. 소비자 package.json 의 tarball URL 태그 갱신 (스켈레톤 base 포함)
+5. sv-agent-team `SKELETON_IMPL.md` 를 같은 내용으로 갱신 (에이전트용 스펙)
+
+### 버전 문자열 만들기
+
+`YYYYMMDD.N.0` — `YYYYMMDD` 는 발행일, `N` 은 **그날의 몇 번째 판인지**(1부터),
+마지막 `0` 은 자리 채움이다.
+
+- 오늘 첫 판이면 `N=1`, 같은 날 두 번째 판이면 `N=2`. 날이 바뀌면 다시 1 부터
+- 날짜는 **추정하지 말고 명령으로 얻는다** (KST 기준):
+
+```
+python -c "from datetime import datetime,timezone,timedelta; print(datetime.now(timezone(timedelta(hours=9))).strftime('%Y%m%d'))"
+```
+
+- 그날 이미 나간 판이 있는지는 태그 목록으로 확인한다: `git tag -l 'ui-v20260804.*'`
+
+마지막 자리 `.0` 은 **npm 이 강제하는 것**이다. npm 은 `major.minor.patch` 세 자리를
+요구해 `20260804.1` 같은 두 자리를 거부하고, leading zero 도 거부해 `2026.08.04` 도
+쓸 수 없다(그래서 월·일을 붙여 쓴다). 백엔드 키트(PEP 440)는 두 자리도 받지만
+세 키트가 같은 문자열 모양을 쓰도록 그쪽을 여기에 맞췄다.
+
+### 태그 형식
+
+태그는 `ui-v<버전>` 이다 — 예: `ui-v20260804.1.0`.
+**한 번 push 한 태그는 옮기지 않는다.** semver 로 나간 `ui-v0.18.1` 까지의 태그도
+그 번호 그대로 남는다 — 소비자 package.json 이 그 URL 을 가리키고 있다.

@@ -18,9 +18,11 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 �
 
 1. **additive 우선** — 새 기능은 새 서브패스/새 함수/새 옵션 props 로.
    기존 시그니처·키·기본 동작 변경은 breaking 이다.
-2. **breaking 은 메이저 신호와 함께** — 계약을 깨야 하면 버전을 올리고
-   README/CHANGELOG 에 마이그레이션을 적는다. vendor 고정 덕에 기존
-   소비자는 조용히 깨지지 않는다 — 이 안전장치를 전제로 설계해도 된다.
+2. **breaking 은 CHANGELOG 에 명시한다** — 날짜 버전에는 메이저 자리가 없어
+   버전 문자열이 크기를 말해 주지 않는다. 계약을 깨야 하면 그 판의 CHANGELOG
+   항목에 **깨지는 것과 마이그레이션**을 적어라. 소비자는 태그 URL 로 고정돼
+   있어 자기가 태그를 올릴 때 그 항목을 읽고 알아챈다 — 조용히 깨지지 않는다.
+   이 안전장치를 전제로 설계해도 되지만, **적지 않으면 안전장치가 없는 것과 같다.**
 3. **라이브러리 교체는 내부에서 흡수** — 계약 모양(함수 시그니처·hook
    호출 모양·props)을 유지한 채 구현만 바꾼다. 예: zustand 를 바꾸게
    되면 `(selector) => value` hook 모양을 에뮬레이션해서 유지한다.
@@ -96,12 +98,20 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 �
 
 | 축 | 배포물 | 소비자 반영 |
 |---|---|---|
-| @sv/kit-ui | GitHub 태그 `ui-vX.Y.Z` (tarball) | package.json 의 태그 URL 갱신 |
+| @sv/kit-ui | GitHub 태그 `ui-vYYYYMMDD.N.0` (tarball) | package.json 의 태그 URL 갱신 |
 
-- 태그: `ui-vX.Y.Z` — `git push origin main --tags` 가 곧 배포
+- 버전은 **날짜 기반(CalVer) `YYYYMMDD.N.0`** 이다 — 발행일 + 그날의 판 순번(1부터),
+  마지막 `0` 은 자리 채움. `20260804.1.0` 부터 이 형식이고 그 전은 semver(0.x)였다.
+  `.0` 이 있는 이유는 npm 이 `major.minor.patch` 세 자리를 강제하기 때문이고, 월·일을
+  붙여 쓰는 이유는 npm 이 leading zero 를 거부하기 때문이다 — 상세는 CHANGELOG 머리말
+- 태그: `ui-vYYYYMMDD.N.0`(예: `ui-v20260804.1.0`) — `git push origin main --tags` 가 곧 배포.
+  semver 로 나간 `ui-v0.18.1` 까지의 태그는 그 형식 그대로 두고 옮기지 않는다
 - **소비 채널은 GitHub 태그 고정 하나**: 스켈레톤 생성물·total·git-worktree-nextjs
-  전부 package.json 에 `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-vX.Y.Z.tar.gz`
+  전부 package.json 에 `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v<버전>.tar.gz`
   로 고정 소비 (public 저장소 — 무인증, git 바이너리 불필요). 로컬 kit 개발은 `file:` 경로
 - 소비자는 태그 URL 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
   URL 태그를 올리기 전에는 도달하지 않는다. 이것이 breaking 변경의
-  최종 방어선이다. **한 번 push 한 태그는 옮기지 않는다.**
+  최종 방어선이고, 날짜 버전에서 메이저 자리를 대신하는 장치이기도 하다.
+  **태그를 올리는 사람이 그 사이 판의 CHANGELOG 를 읽는다**는 전제라,
+  breaking 을 CHANGELOG 에 적는 것이 「변경 규칙」 2 다.
+  **한 번 push 한 태그는 옮기지 않는다.**
