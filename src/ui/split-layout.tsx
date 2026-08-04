@@ -54,6 +54,14 @@ export interface SplitLayoutHandle {
   open: () => void;
   /** 목록을 닫는다(넓은 화면=패널 접기 / 좁은 화면=서랍 닫기) */
   close: () => void;
+  /**
+   * 좁은 화면에서만 닫는다 — 넓은 화면에서는 아무것도 안 한다.
+   *
+   * "골랐으니 목록을 치운다"는 좁은 화면 사정이다(목록이 상세를 덮는다).
+   * 넓은 화면은 나란히 놓이므로 고를 때마다 접으면 다음 항목을 고르려고
+   * 매번 다시 펴야 한다. `close()` 를 그대로 부르면 그 일이 벌어진다.
+   */
+  closeIfNarrow: () => void;
   /** 목록이 지금 닫혀 있는가 */
   isClosed: () => boolean;
 }
@@ -93,7 +101,7 @@ export interface SplitLayoutProps {
   /**
    * 좁은 화면 서랍에서 **아무 데나 누르면 닫히게** 할지. 기본 true.
    * 목록 머리줄에 검색·필터·버튼이 있는 화면은 꺼라 — 그것들을 누를 때마다
-   * 서랍이 닫혀 쓸 수 없다. 끈 화면은 `layoutRef.close()` 로 고른 순간에만 닫는다.
+   * 서랍이 닫혀 쓸 수 없다. 끈 화면은 `layoutRef.closeIfNarrow()` 로 고른 순간에만 닫는다.
    */
   closeDrawerOnClick?: boolean;
   /** 좁은 화면 서랍 폭 등(기본 `w-[86vw] max-w-sm`) */
@@ -204,6 +212,9 @@ export function SplitLayout({
         isClosed,
         open,
         close,
+        closeIfNarrow: () => {
+          if (narrow) setDrawer(false);
+        },
         toggle: () => (isClosed() ? open() : close()),
       };
     },
@@ -233,7 +244,7 @@ export function SplitLayout({
             {/* 고르면 서랍은 닫힌다 — 좁은 화면에서 목록이 상세를 계속 가리면
                 고른 보람이 없다. 다만 목록 머리줄에 검색·필터·버튼이 있는 화면은
                 그것들까지 서랍을 닫아 버려 쓸 수 없다 — 그런 화면은 이걸 끄고
-                `layoutRef.close()` 로 고른 순간에만 닫는다 */}
+                `layoutRef.closeIfNarrow()` 로 고른 순간에만 닫는다 */}
             {closeDrawerOnClick ? (
               <div onClick={() => setDrawer(false)}>{left}</div>
             ) : (
