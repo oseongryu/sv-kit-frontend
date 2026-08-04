@@ -1,8 +1,8 @@
 # sv-kit-frontend 공개 계약 (CONTRACT)
 
 이 문서는 @sv/kit-ui 를 고치는 사람(사람이든 에이전트든)을 위한 경계 선언이다.
-**공개 계약**에 속하는 것을 바꾸면 소비자(스켈레톤 생성물·total·
-git-worktree-nextjs)가 깨진다. **내부**에 속하는 것은
+**공개 계약**에 속하는 것을 바꾸면 소비자(`sv-platform/frontend`·
+`backend-auth/frontend`·이 저장소의 `examples/*`)가 깨진다. **내부**에 속하는 것은
 계약만 지키면 자유롭게 갈아치울 수 있다 — 라이브러리 교체 포함.
 
 백엔드는 **스택별로 두 계보**가 있다 — Flask 는 `sv-kit-backend`(`svkit`),
@@ -106,9 +106,10 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 �
   0.18.2 에서 되돌렸다 (경위는 CHANGELOG 0.18.2)
 - 태그: `ui-vX.Y.Z` — `git push origin main --tags` 가 곧 배포.
   날짜 버전으로 나간 `ui-v20260804.*` 태그는 그 형식 그대로 두고 옮기지 않는다
-- **소비 채널은 GitHub 태그 고정 하나**: 스켈레톤 생성물·total·git-worktree-nextjs
-  전부 package.json 에 `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v<버전>.tar.gz`
-  로 고정 소비 (public 저장소 — 무인증, git 바이너리 불필요). 로컬 kit 개발은 `file:` 경로
+- **소비 채널은 GitHub 태그 고정 하나**: 소비자 전부 package.json 에
+  `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v<버전>.tar.gz`
+  로 고정 소비 (public 저장소 — 무인증, git 바이너리 불필요). 로컬 kit 개발은 `file:` 경로.
+  소비자 목록은 README 릴리스 절차 4번에 있다 — 늘거나 줄면 그쪽을 고친다
 - 소비자는 태그 URL 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
   URL 태그를 올리기 전에는 도달하지 않는다. 이것이 breaking 변경의
   최종 방어선이다. **한 번 push 한 태그는 옮기지 않는다.**

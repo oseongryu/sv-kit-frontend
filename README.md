@@ -82,8 +82,14 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 2. **이 README 상단 설치 예시**와 `examples/*/package.json` 의 태그 URL 갱신 —
    예제도 소비자다. 복붙하는 사람이 옛 판을 받게 된다
 3. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
-4. 소비자 package.json 의 tarball URL 태그 갱신 (스켈레톤 base 포함)
-5. sv-agent-team `SKELETON_IMPL.md` 를 같은 내용으로 갱신 (에이전트용 스펙)
+4. 소비자 package.json 의 tarball URL 태그 갱신 — **아래 목록이 전부다**.
+   태그 고정이라 올리지 않은 소비자는 옛 판 그대로 돌아간다(깨지지 않는다)
+
+| 소비자 | 비고 |
+|---|---|
+| `sv-platform/frontend` | 주 소비자. lock 이 `package-lock.json` 이므로 URL 을 고친 뒤 `npm install --package-lock-only` 로 lock 도 함께 갱신한다 |
+| `backend-auth/frontend` | 갱신 주기가 느리다 — 올릴 때 CHANGELOG 의 breaking 항목을 먼저 본다 |
+| `examples/*` | 위 2번에서 이미 갱신 |
 
 예제의 `package-lock.json` 은 **버전 관리에서 뺀다**(.gitignore). lock 은 `integrity`
 해시를 담아 URL 만 손으로 고칠 수 없고 **태그가 원격에 올라간 뒤에야** 갱신되는데,
