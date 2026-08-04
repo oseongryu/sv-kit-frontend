@@ -77,7 +77,10 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 �
     `ui/status-badge` 의 ok·warn 톤과 `ui/progress` 가 이 이름에 의존한다.
     소비자는 전역 CSS 에서 `@import "@sv/kit-ui/styles/tokens.css";` 로 가져간다
 - `shell`: `LayoutApp`/`NavHeaderFrame`/`NavMenuModal`/`CommandPalette`
-  props, `useTabStore`/`TabProvider`/`useTabId`/`useSidebarToggleStore`
+  props, `useTabStore`/`enableTabsPersist(key)`/`TabProvider`/`useTabId`/
+  `useSidebarToggleStore`. `useTabStore` 는 **키를 받기 전까지 저장하지 않는다**
+  (기본 storage 가 메모리) — `LayoutApp` 의 `tabsPersistKey` 를 주거나
+  `enableTabsPersist` 를 직접 부를 때만 localStorage 로 바뀐다
 - `route-shell`: `createRouteTabsStore(key)`/`createUiStore(key)` 가
   돌려주는 **selector-hook 호출 모양**(`store((s) => s.x)` + `.persist
   .rehydrate()`), `RouteAppShell`/`RouteTabBar`/`SplitPane` props

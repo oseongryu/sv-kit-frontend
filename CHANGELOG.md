@@ -6,6 +6,24 @@
 옮기지 않는다**(소비자 package.json 이 그 URL 을 가리킨다). 아래 날짜 항목들도 그 번호로
 배포된 사실이라 그대로 둔다.
 
+## 0.19.0
+
+**`shell` 탭 목록을 localStorage 에 유지할 수 있다.** 지금까지 `useTabStore` 는 persist 가
+없어 새로고침하면 열어둔 탭이 전부 사라졌다. 같은 킷의 `route-shell/route-tabs.ts` 는 이미
+`persist(..., { skipHydration: true })` + 앱의 `.persist.rehydrate()` 패턴을 쓰고 있어 그쪽에 맞췄다.
+
+- `LayoutApp` 에 `tabsPersistKey?: string` 추가 — 주면 그 키로 저장·복원한다
+- `shell` 에서 `enableTabsPersist(key)` export — `LayoutApp` 을 안 쓰고 직접 켤 때
+
+**기본 동작은 그대로다.** `useTabStore` 의 기본 storage 는 메모리라 키를 주기 전에는
+아무것도 저장·복원되지 않는다. persist 를 기본으로 켰다면 기존 소비자의 동작이 조용히
+바뀌었을 텐데(CONTRACT 1항이 말하는 "기본 동작 변경 = breaking"), opt-in 이라 그렇지 않다.
+그래서 minor 인데도 마이그레이션이 필요 없다 — 올리기만 하면 된다.
+
+복원과 `initialTab` 이 경합하지 않도록, `tabsPersistKey` 를 준 경우 `LayoutApp` 은
+rehydrate 가 끝난 뒤에야 `initialTab` 자동 오픈을 판단한다. 안 그러면 복원된 탭이 있는데도
+`tabs.length === 0` 인 순간을 보고 initialTab 을 열어 버린다.
+
 ## 0.18.2
 
 **날짜 기반(CalVer) 버전 체계를 되돌리고 semver 로 돌아왔다.** 하루 만의 번복이다.

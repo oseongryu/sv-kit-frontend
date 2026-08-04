@@ -1,5 +1,5 @@
 // @sv/kit-ui/shell — 탭 셸 공통부. 앱 결합(store·i18n·인증·설정화면)은 주입.
-export { useTabStore, type Tab } from "./tabs";
+export { useTabStore, enableTabsPersist, type Tab } from "./tabs";
 export { TabProvider, useTabId } from "./tab-context";
 export { useSidebarToggleStore } from "./sidebar-toggle";
 export { LayoutApp, type LayoutAppProps, type LeaveGuardText } from "./LayoutApp";

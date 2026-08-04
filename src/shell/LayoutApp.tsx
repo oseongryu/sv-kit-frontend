@@ -9,7 +9,7 @@
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { X } from "lucide-react";
-import { useTabStore, type Tab } from "./tabs";
+import { useTabStore, enableTabsPersist, type Tab } from "./tabs";
 import { TabProvider } from "./tab-context";
 import { cn } from "../ui/utils";
 import { ConfirmDialog } from "../ui/ConfirmDialog";
@@ -43,6 +43,11 @@ export interface LayoutAppProps {
   theme?: "dark" | "light";
   /** 최초 mount 훅 — persist rehydrate·i18n hydrate 등 앱 초기화 */
   onBoot?: () => void;
+  /**
+   * 주면 탭 목록을 이 키로 localStorage 에 저장·복원한다 (새로고침해도 탭 유지).
+   * 없으면 저장하지 않는다 — 기본 동작은 매 진입마다 빈 탭이다.
+   */
+  tabsPersistKey?: string;
   /** 탭 콘텐츠 래핑 — 멀티서버 앱의 ServerProvider 주입 지점 */
   wrapTab?: (tab: Tab, node: ReactNode) => ReactNode;
   /** 이탈 가드 문구 (기본 한국어) */
@@ -68,10 +73,13 @@ function getTabComponent(
 
 export function LayoutApp({
   tabComponents, initialTab, backGuard, header, theme, onBoot, wrapTab,
+  tabsPersistKey,
   leaveGuard = DEFAULT_LEAVE_GUARD,
 }: LayoutAppProps) {
   const { tabs, activeTabId, setActiveTab, closeTab, openTab } = useTabStore();
   const [showLeaveGuard, setShowLeaveGuard] = useState(false);
+  // 복원 전에는 initialTab 을 열지 않는다 — 저장된 탭과 경합해 둘 다 어긋난다.
+  const [tabsReady, setTabsReady] = useState(!tabsPersistKey);
   const pendingLeaveRef = useRef(false);
   const bootRef = useRef(onBoot);
   bootRef.current = onBoot;
@@ -81,9 +89,18 @@ export function LayoutApp({
   }, []);
 
   useEffect(() => {
-    if (!initialTab) return;
+    if (!tabsPersistKey) return;
+    let alive = true;
+    enableTabsPersist(tabsPersistKey).finally(() => {
+      if (alive) setTabsReady(true);
+    });
+    return () => { alive = false; };
+  }, [tabsPersistKey]);
+
+  useEffect(() => {
+    if (!initialTab || !tabsReady) return;
     if (tabs.length === 0) openTab(initialTab);
-  }, [initialTab, tabs.length, openTab]);
+  }, [initialTab, tabsReady, tabs.length, openTab]);
 
   useEffect(() => {
     if (!backGuard) return;
