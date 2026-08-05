@@ -4,6 +4,14 @@ export { TabProvider, useTabId } from "./tab-context";
 export { useSidebarToggleStore } from "./sidebar-toggle";
 export { LayoutApp, type LayoutAppProps, type LeaveGuardText } from "./LayoutApp";
 export { LayoutContentHeader } from "./LayoutContentHeader";
+export {
+  MasterDetail,
+  TabbedPage,
+  Workbench,
+  ScrollArea,
+  type PatternBaseProps,
+  type PageTab,
+} from "./patterns";
 export { NavHeaderFrame, type NavHeaderFrameProps } from "./NavHeaderFrame";
 export { NavMenuModal, type NavItemLike } from "./NavMenuModal";
 export {

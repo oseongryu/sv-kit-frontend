@@ -6,6 +6,22 @@
 옮기지 않는다**(소비자 package.json 이 그 URL 을 가리킨다). 아래 날짜 항목들도 그 번호로
 배포된 사실이라 그대로 둔다.
 
+## 0.21.0
+
+**화면 레이아웃 패턴 3종을 `shell` 로 옮겼다** — `MasterDetail`·`TabbedPage`·`Workbench`
+(+ `ScrollArea`). 앱이 저마다 갖고 있던 것을 킷이 가진다. 화면은 배치를 새로 짜지 않고
+셋 중 하나를 고른다.
+
+- 머리줄은 `LayoutContentHeader` 다 — 탭 셸의 화면 머리줄과 같은 규격이 된다
+- `MasterDetail` 은 자기 `SplitLayout` 의 손잡이를 잡아 **목록 토글을 스스로 배선한다**.
+  화면이 `layoutRef` 를 들고 다니며 `onToggleSidebar` 를 넘길 일이 없다
+- `TabbedPage` 는 탭바가 곧 머리줄이다 — `LayoutContentHeader` 를 한 줄 더 얹지 않는다.
+  두 줄이 되면 본문만 좁아지고, 이 패턴에는 목록 토글처럼 헤더가 꼭 가져야 하는 것이 없다
+- 슬롯은 `actions`(동작)·`leading`(문구)·`notice`(경고 한 줄) 셋
+
+앱에 같은 이름의 사본이 있으면 import 를 `@sv/kit-ui/shell` 로 바꾸고 지우면 된다.
+동작·모양은 그대로다.
+
 ## 0.20.0
 
 **`SplitLayoutHandle` 에 `closeIfNarrow()` 를 추가했다.** 좁은 화면(서랍)에서만 닫고
