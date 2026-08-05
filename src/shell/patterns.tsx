@@ -30,33 +30,50 @@ export interface PatternBaseProps {
   leading?: ReactNode;
   /** 경고·오류 한 줄 */
   notice?: ReactNode;
+  /**
+   * 머리줄을 화면이 통째로 조립한다 — `<모듈>ContentHeader` 를 넘기는 자리다.
+   * 슬롯(`actions`·`leading`)으로 모자랄 때 쓴다: 왼쪽 문구와 오른쪽 동작을 한
+   * 컴포넌트가 함께 갖거나, 가운데 슬롯이 필요할 때.
+   *
+   * 주면 `actions`·`leading` 은 무시한다 — 머리줄의 주인이 둘일 수 없다.
+   * 넘기는 컴포넌트는 `LayoutContentHeader` 로 시작해야 한다(머리줄 규격).
+   */
+  header?: ReactNode;
 }
 
 function Frame({
   actions,
   leading,
   notice,
+  header,
   onToggleSidebar,
   children,
 }: PatternBaseProps & { onToggleSidebar?: () => void; children: ReactNode }) {
-  const hasHeader = Boolean(actions || leading || onToggleSidebar);
+  const hasSlotHeader = Boolean(actions || leading || onToggleSidebar);
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      {hasHeader ? (
-        <LayoutContentHeader onToggleSidebar={onToggleSidebar}>
-          {leading ? (
-            <LayoutContentHeader.Main>{leading}</LayoutContentHeader.Main>
-          ) : null}
-          {actions ? (
-            <LayoutContentHeader.Right>{actions}</LayoutContentHeader.Right>
-          ) : null}
-        </LayoutContentHeader>
-      ) : null}
+      {header ?? (
+        hasSlotHeader ? (
+          <LayoutContentHeader onToggleSidebar={onToggleSidebar}>
+            {leading ? (
+              <LayoutContentHeader.Main>{leading}</LayoutContentHeader.Main>
+            ) : null}
+            {actions ? (
+              <LayoutContentHeader.Right>{actions}</LayoutContentHeader.Right>
+            ) : null}
+          </LayoutContentHeader>
+        ) : null
+      )}
       {notice ? <div className="shrink-0 px-4 pt-3">{notice}</div> : null}
       <div className="min-h-0 flex-1">{children}</div>
     </div>
   );
+}
+
+/** 목록을 여닫는 손잡이 — `header` 를 함수로 넘기면 이걸 받는다. */
+export interface MasterDetailHeaderCtx {
+  onToggleSidebar: () => void;
 }
 
 /** 목록 → 상세. 폭은 드래그로 바꾸고 화면별로 기억한다. */
@@ -66,19 +83,30 @@ export function MasterDetail({
   listSize = 34,
   list,
   detail,
+  header,
   ...base
-}: PatternBaseProps & {
+}: Omit<PatternBaseProps, "header"> & {
   storageKey: string;
   listTitle?: string;
   listSize?: number;
   list: ReactNode;
   detail: ReactNode;
+  /**
+   * 화면이 조립한 머리줄. 함수로 주면 목록 토글 손잡이를 받는다 —
+   * `<모듈>ContentHeader` 가 `LayoutContentHeader` 에 그대로 넘기면 된다.
+   * 화면이 `SplitLayout` 의 ref 를 들고 다닐 필요가 없다.
+   */
+  header?: ReactNode | ((ctx: MasterDetailHeaderCtx) => ReactNode);
 }) {
   const layoutRef = useRef<SplitLayoutHandle | null>(null);
   const toggleSidebar = useCallback(() => layoutRef.current?.toggle(), []);
 
   return (
-    <Frame {...base} onToggleSidebar={toggleSidebar}>
+    <Frame
+      {...base}
+      header={typeof header === "function" ? header({ onToggleSidebar: toggleSidebar }) : header}
+      onToggleSidebar={toggleSidebar}
+    >
       <SplitLayout
         storageKey={storageKey}
         defaultSize={listSize}

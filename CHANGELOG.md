@@ -6,6 +6,25 @@
 옮기지 않는다**(소비자 package.json 이 그 URL 을 가리킨다). 아래 날짜 항목들도 그 번호로
 배포된 사실이라 그대로 둔다.
 
+## 0.22.0
+
+**패턴에 `header` 슬롯을 넣었다.** 화면이 머리줄을 통째로 조립해 넘긴다 —
+`<모듈>ContentHeader` 를 별도 파일로 두는 규약을 패턴 위에서도 지킬 수 있다.
+
+- 슬롯(`actions`·`leading`)으로 모자랄 때 쓴다: 왼쪽 문구와 오른쪽 동작을 한
+  컴포넌트가 함께 갖거나, 가운데 슬롯이 필요할 때. 주면 두 슬롯은 무시한다
+- `MasterDetail` 은 `header` 를 **함수로도** 받는다 — 목록 토글 손잡이를 인자로
+  주므로 화면이 `SplitLayout` 의 ref 를 들고 다니지 않아도 된다
+
+```tsx
+<MasterDetail
+  header={({ onToggleSidebar }) => <JobsContentHeader onToggleSidebar={onToggleSidebar} … />}
+  … />
+```
+
+넘기는 컴포넌트는 `LayoutContentHeader` 로 시작해야 한다(머리줄 규격). 0.21.0 의
+슬롯 방식은 그대로 둔다 — 동작만 있는 화면은 `actions` 한 줄이 여전히 짧다.
+
 ## 0.21.0
 
 **화면 레이아웃 패턴 3종을 `shell` 로 옮겼다** — `MasterDetail`·`TabbedPage`·`Workbench`
