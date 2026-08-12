@@ -1,5 +1,15 @@
 # Changelog
 
+## ui-v0.22.1
+
+### 고침
+
+- `WithTooltip` 이 트리거 안에 children 을 넣어 `<button>` 이 중첩됐다. 브라우저가
+  그 DOM 을 고쳐 놓기 때문에 SSR 결과와 어긋나 **hydration 이 깨졌다**(React #418).
+  children 을 `TooltipTrigger` 의 `render` 로 넘겨 요소를 하나만 남긴다.
+  `NavHeaderFrame` 처럼 툴팁 안에 버튼을 두는 자리 전부에 걸린다.
+
+
 @sv/kit-ui 의 모든 소비자 영향 변경을 기록한다. 형식은 Keep a Changelog, 버전은 semver(0.x).
 태그는 `ui-v<버전>`. 하루 동안 세 판(`20260804.1.0`·`.2.0`·`.3.0`)이 날짜 기반(CalVer)으로
 나갔다가 0.18.2 부터 semver 로 돌아왔다. **어느 형식으로 나갔든 이미 push 한 태그는
