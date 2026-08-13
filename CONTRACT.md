@@ -56,6 +56,12 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 �
     `ui/use-confirm`(`useConfirm` 이 돌려주는 `{ confirm, dialog }` 모양·`ConfirmAsk`),
     `ui/table-scroll`(`TableScroll`), `ui/table-state`(`TableState`),
     `ui/form-field`(`FormField`·`CheckField`), `ui/filter-bar`(`FilterBar`·`FilterCheck`),
+    `ui/form-state`(`FormError`·`FormState` — 0.23.0~. 값이 비면 `null` 인 것이 계약이다.
+    호출부가 `{error && …}` 를 다시 적지 않는다),
+    `ui/card`(0.23.0~ — `Card`·`CardHeader`·`CardTitle`·`CardDescription`·`CardContent`·
+    `CardFooter`·`cardVariants`. `size`(`sm`·`md`)가 **카드 안 조각의 여백까지 정하는 것**과
+    `CardContent` 의 `pt` 가 0 인 것이 계약이다 — 헤더 없이 쓰면 호출부가 `pt` 를 되살린다.
+    태그 교체는 `ui/badge` 와 같은 `render` props),
     `ui/progress`(`Progress`), `ui/status-badge`(`StatusBadge`·`toneFill`·`Tone`),
     `ui/panel`(`PanelHead`·`RowCount`), `ui/pagination`(`Pagination`),
     `ui/split-layout`(`SplitLayout`·`Pane`·`SplitLayoutHandle`),

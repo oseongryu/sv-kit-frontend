@@ -1,5 +1,31 @@
 # Changelog
 
+## 0.23.0
+
+**카드와 폼 오류 두 가지를 킷이 가진다** — `ui/card`·`ui/form-state`. 소비 앱이
+각자 갖고 있던 것을 걷어 온다(카드 네 벌, 오류 한 줄 마크업 100곳 남짓).
+
+- `ui/card` — `Card`·`CardHeader`·`CardTitle`·`CardDescription`·`CardContent`·
+  `CardFooter` (shadcn 계열 합성). 축은 둘이다:
+  - `size` — `md`(기본, `rounded-xl` + 20px 여백. 화면 한 덩어리)와
+    `sm`(`rounded` + 12px 여백. 여러 장 쌓이는 목록 항목)
+  - `interactive` — 카드 전체가 클릭 대상일 때. hover 강조와 포커스 링이 붙는다
+  - 밀도는 **카드가 정하고 안의 조각이 따른다**(context) — `<CardHeader size>` 를
+    조각마다 적지 않는다
+  - 태그는 `render` 로 바꾼다(`ui/badge` 와 같은 방식) — `<a>`·`<button>` 카드
+  - 본문 `pt` 는 0 이다(헤더가 위 여백을 갖는다). 헤더 없이 본문만 쓰면
+    `<CardContent className="pt-3">` 로 되살린다
+- `ui/form-state` — `FormError`(값이 비면 `null`, 있으면 `text-destructive` 한 줄)와
+  `FormState`(오류 → 로딩 → `null`. 기본 문구는 `ui/table-state` 와 같다).
+  `FormError` 는 방금 한 동작이 실패한 것이라 문구를 그대로 쓰고, `FormState` 는
+  그 영역을 못 불러온 것이라 안내를 앞에 붙인다
+- 둘 다 긴 서버 문구를 `whitespace-pre-wrap`·`break-words` 로 받는다 — 줄바꿈이
+  든 오류가 한 줄로 뭉개지거나 폼 폭을 뚫던 것을 여기서 막는다
+
+소비 앱은 `{error && <p className="text-xs text-destructive">{error}</p>}` 를
+`<FormError error={error} />` 로 바꾸면 된다. 카드는 `size="sm"` 이 목록 카드,
+기본값이 화면 카드다.
+
 ## ui-v0.22.1
 
 ### 고침

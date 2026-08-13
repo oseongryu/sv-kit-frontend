@@ -51,6 +51,8 @@ shadcn 계열 낱개 프리미티브 위에, 운영 화면이 매번 같은 모�
 | `ui/use-confirm` | `const { confirm, dialog } = useConfirm()` — `await confirm({…})` / `confirm({…, run})` |
 | `ui/table-scroll` | 표 스크롤 영역 — 표가 하나면 `fill`, 둘 이상이면 `max`(기본 40vh). thead 붙박이 |
 | `ui/table-state` | 목록의 오류→로딩→빈 3분기 행 (셋 다 아니면 `null`) |
+| `ui/form-state` | `FormError`(값 없으면 `null`)·`FormState`(오류→로딩) — 표 아닌 자리의 대응물 |
+| `ui/card` | `Card`+헤더·제목·설명·본문·바닥. `size`(`sm` 목록/`md` 화면)·`interactive`·`render` |
 | `ui/form-field` | `FormField`(라벨+컨트롤, 높이·폭 강제)·`CheckField` |
 | `ui/filter-bar` | 조회조건 한 줄 — 안의 컨트롤을 내용 폭·h-7 로 되돌린다 |
 | `ui/progress` | 진행바 (0–100 클램프, 톤 색) |
