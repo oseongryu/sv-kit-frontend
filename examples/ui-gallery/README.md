@@ -1,7 +1,7 @@
 # kit-ui 프리미티브 전시장 — 운영 화면 조각을 눈으로 고른다
 
-백엔드 없이 뜨는 최소 Next 앱. 0.9.0 의 운영 화면 조립 프리미티브(팝업 셋·패널 뼈대·
-상태 조각)를 실제로 열어 보고, 각 절의 코드 조각을 그대로 복붙한다. 데이터는 파일 안
+백엔드 없이 뜨는 최소 Next 앱. 운영 화면 조립 프리미티브(팝업 셋·패널 뼈대·상태 조각 —
+0.9.0, 카드·폼 오류 — 0.23.0)를 실제로 열어 보고, 각 절의 코드 조각을 그대로 복붙한다. 데이터는 파일 안
 상수라 서버가 필요 없다.
 
 ## 실행
@@ -14,6 +14,8 @@ npm run dev            # http://localhost:3000
 - **팝업** — `FormModal`(크기·저장 중 잠금) · `ViewModal`(로딩·오류·정상) · `useConfirm`(await·run)
 - **패널 뼈대** — `PanelHead` → `FilterBar` → `TableScroll fill` 순서. 표를 내려도 위 둘이 고정된다
 - **조각** — `StatusBadge` 톤 5종 · `Progress` · `FormField`/`CheckField` · `TableState` 3상태
+- **카드** — `Card` 밀도 `md`/`sm` · `render` 로 `<a>`·`<button>` · 헤더 없는 본문의 `pt-3`
+- **폼 오류** — `FormError`(없음·한 줄·여러 줄) · `FormState` 3상태 · `errorPrefix` 덮기
 
 오른쪽 위 [다크] 로 토큰이 라이트/다크 두 벌인지 함께 확인한다.
 

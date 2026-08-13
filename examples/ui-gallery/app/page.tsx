@@ -7,16 +7,20 @@
 import { useState } from "react";
 import { Button } from "@sv/kit-ui/ui/button";
 
+import { CardSection } from "./sections/card-section";
+import { FormStateSection } from "./sections/form-state-section";
 import { ModalSection } from "./sections/modal-section";
 import { PanelSection } from "./sections/panel-section";
 import { PartsSection } from "./sections/parts-section";
 
-type TabKey = "modal" | "panel" | "parts";
+type TabKey = "modal" | "panel" | "parts" | "card" | "form-state";
 
 const TABS: { key: TabKey; label: string }[] = [
   { key: "modal", label: "팝업" },
   { key: "panel", label: "패널 뼈대" },
   { key: "parts", label: "조각" },
+  { key: "card", label: "카드" },
+  { key: "form-state", label: "폼 오류" },
 ];
 
 export default function Page() {
@@ -61,6 +65,8 @@ export default function Page() {
       {tab === "modal" ? <ModalSection /> : null}
       {tab === "panel" ? <PanelSection /> : null}
       {tab === "parts" ? <PartsSection /> : null}
+      {tab === "card" ? <CardSection /> : null}
+      {tab === "form-state" ? <FormStateSection /> : null}
     </main>
   );
 }
