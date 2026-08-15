@@ -9,7 +9,7 @@
 // 폭만 계산값이라 인라인 스타일로 두고, 색은 톤 표(ui/status-badge)에서 가져온다.
 //
 // ⚠ `ok`·`warn` 톤은 `--success`·`--warning` 토큰을 쓴다 — 소비 앱 전역 CSS 에
-//    `@import "@sv/kit-ui/styles/tokens.css";` 가 없으면 그 두 톤만 색이 안 나온다.
+//    `@import "@/kit/styles/tokens.css";` 가 없으면 그 두 톤만 색이 안 나온다.
 
 import { toneFill, type Tone } from "./status-badge";
 import { cn } from "./utils";

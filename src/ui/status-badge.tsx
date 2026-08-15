@@ -11,7 +11,7 @@
 //
 // ⚠ `ok`·`warn` 은 shadcn 표준에 없는 `--success`·`--warning` 토큰을 쓴다.
 //    소비 앱의 전역 CSS 에 아래 한 줄이 없으면 이 두 톤만 색이 안 나온다.
-//      @import "@sv/kit-ui/styles/tokens.css";
+//      @import "@/kit/styles/tokens.css";
 
 import type { ReactNode } from "react";
 

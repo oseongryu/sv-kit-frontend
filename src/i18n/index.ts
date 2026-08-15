@@ -11,7 +11,7 @@
 // 쓰는 법(앱의 `lib/i18n/index.ts`):
 //
 // ```ts
-// import { createI18n } from "@sv/kit-ui/i18n";
+// import { createI18n } from "@/kit/i18n";
 // import ko, { type TranslationKey } from "./ko";
 // import en from "./en";
 //

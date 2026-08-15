@@ -1,6 +1,6 @@
 /* 상태색 토큰 — success·warning·info.
  *
- * kit-ui 는 CSS 를 배포하지 않고 shadcn 표준 토큰(primary·secondary·destructive·
+ * 킷은 CSS 를 배포하지 않고 shadcn 표준 토큰(primary·secondary·destructive·
  * muted…)만 가정한다. 그런데 상태를 다루는 프리미티브(`ui/status-badge` 의
  * ok·warn·info 톤, `ui/progress`)에는 "정상"·"주의"·"진행중"이 필요하고, 표준에 없다.
  * info 는 한때 `--primary` 를 빌려 썼는데, primary 가 무채색인 앱에서는 "진행중"이
@@ -8,7 +8,7 @@
  * 화면마다 #16a34a 를 다시 적으면 다크 모드에서 한 곳씩 깨지므로 토큰으로 둔다.
  *
  * 소비 앱의 전역 CSS 에서 한 줄로 가져간다 (tailwind v4 기준, `@import "tailwindcss"` 뒤):
- *   @import "@sv/kit-ui/styles/tokens.css";
+ *   @import "@/kit/styles/tokens.css";
  *
  * 이 줄이 없으면 ok·warn·info 톤의 색이 조용히 안 나온다(bad·off 는 표준 토큰이라 멀쩡하다).
  * 값을 앱 팔레트에 맞추고 싶으면 이 파일을 가져간 뒤 `:root` 에서 덮어쓰면 된다.

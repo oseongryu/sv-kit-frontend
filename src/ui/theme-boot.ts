@@ -22,7 +22,7 @@ export const DARK_CLASS = "dark";
  *
  * ```tsx
  * // app/layout.tsx (서버 컴포넌트)
- * import { themeBootScript } from "@sv/kit-ui/ui/theme-boot";
+ * import { themeBootScript } from "@/kit/ui/theme-boot";
  *
  * <head>
  *   <script dangerouslySetInnerHTML={{ __html: themeBootScript(STORAGE_KEY) }} />
