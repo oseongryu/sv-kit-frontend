@@ -5,7 +5,7 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 소비 앱의 Next `transpilePackages` 가 직접 컴파일한다.
 
 백엔드는 스택별로 두 계보다 — Flask 는 `sv-kit-backend`(`svkit`), FastAPI 는
-`sv-kit-backend-v2`(`svkit2`). 프론트·백엔드 모두 **GitHub 태그 tarball 로 고정**해 받는다.
+`sv-kit-backend-v2`(`svkit`). 프론트·백엔드 모두 **GitHub 태그 tarball 로 고정**해 받는다.
 
 > **수정 전 필독**: [CONTRACT.md](CONTRACT.md) — 공개 계약(깨면 소비자 파손)과
 > 내부(자유 변경)의 경계, additive 변경 규율.
@@ -37,10 +37,6 @@ pack·태그·핀 갱신 절차가 없다. 형제 디렉토리에 두는 것이 
 // next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
 transpilePackages: ["@sv/kit-ui"],
 ```
-
-단독 소비 예제: [`examples/minimal`](examples/minimal) — 백엔드 짝 없이 api·훅만 시연.
-프리미티브 전시장: [`examples/ui-gallery`](examples/ui-gallery) — 운영 화면 조립 프리미티브를
-실제로 열어 보고 코드를 복붙한다(tailwind 토큰·`@source` 설정 본보기 포함).
 
 ## 서브패스
 
@@ -95,8 +91,7 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 버전은 semver. 브레이킹 체인지 시 minor(0.x 동안) 승격 + 아래 동기화 필수:
 
 1. `package.json` version + CHANGELOG
-2. **이 README 상단 설치 예시**와 `examples/*/package.json` 의 태그 URL 갱신 —
-   예제도 소비자다. 복붙하는 사람이 옛 판을 받게 된다
+2. **이 README 상단 설치 예시**의 태그 URL 갱신
 3. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
 4. 소비자 package.json 의 tarball URL 태그 갱신 — **아래 목록이 전부다**.
    태그 고정이라 올리지 않은 소비자는 옛 판 그대로 돌아간다(깨지지 않는다)
@@ -105,12 +100,6 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 |---|---|
 | `sv-platform/frontend` | 주 소비자. lock 이 `package-lock.json` 이므로 URL 을 고친 뒤 `npm install --package-lock-only` 로 lock 도 함께 갱신한다 |
 | `backend-auth/frontend` | 갱신 주기가 느리다 — 올릴 때 CHANGELOG 의 breaking 항목을 먼저 본다 |
-| `examples/*` | 위 2번에서 이미 갱신 |
-
-예제의 `package-lock.json` 은 **버전 관리에서 뺀다**(.gitignore). lock 은 `integrity`
-해시를 담아 URL 만 손으로 고칠 수 없고 **태그가 원격에 올라간 뒤에야** 갱신되는데,
-그 변경을 커밋하려면 또 판을 올려야 하는 순환이 생긴다. 예제는 배포물이 아니라
-복붙용 참고이므로 lock 을 고정할 실익이 없다 — 받는 사람은 `npm install` 로 만든다.
 
 ### 태그 형식
 

@@ -4,6 +4,3 @@ __pycache__/
 build/
 node_modules/
 *.tgz
-examples/*/package-lock.json
-examples/*/.next/
-examples/*/*.tsbuildinfo

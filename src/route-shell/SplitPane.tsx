@@ -1,5 +1,5 @@
 "use client";
-// 범용 드래그 스플릿 — worktree split-pane.tsx 포팅 일반화.
+// 범용 드래그 스플릿.
 // 두 번째 패널을 % 로 크기 조절, storageKey 지정 시 비율을 localStorage 에 persist.
 import React, { useRef, useCallback, useState, useEffect, type ReactNode } from "react";
 

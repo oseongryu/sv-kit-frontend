@@ -2,11 +2,11 @@
 
 이 문서는 @sv/kit-ui 를 고치는 사람(사람이든 에이전트든)을 위한 경계 선언이다.
 **공개 계약**에 속하는 것을 바꾸면 소비자(`sv-platform/frontend`·
-`backend-auth/frontend`·이 저장소의 `examples/*`)가 깨진다. **내부**에 속하는 것은
+`backend-auth/frontend`)가 깨진다. **내부**에 속하는 것은
 계약만 지키면 자유롭게 갈아치울 수 있다 — 라이브러리 교체 포함.
 
 백엔드는 **스택별로 두 계보**가 있다 — Flask 는 `sv-kit-backend`(`svkit`),
-FastAPI 는 `sv-kit-backend-v2`(`svkit2`). 응답 규약(`{ok,data,meta}`)을 이 저장소와
+FastAPI 는 `sv-kit-backend-v2`(`svkit`). 응답 규약(`{ok,data,meta}`)을 이 저장소와
 공유하므로 규약을 건드릴 때는 그쪽 CONTRACT 도 같이 본다.
 
 실증 근거: kit-ui 0.1→0.18 열여덟 번의 버전업에서 소비자 코드 파손은 0건이었다.

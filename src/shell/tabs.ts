@@ -6,7 +6,7 @@ export interface Tab {
   path: string;        // nav path
   label: string;       // 탭 표시 라벨
   serviceUrl?: string | null; // 해당 탭의 백엔드 service URL
-  // 서버 탭용 (path="/worktree" 일 때)
+  // 원격 서버에 붙는 탭용 — 그 탭을 여는 화면만 채운다
   serverId?: string;
   serverName?: string;
   wsUrl?: string;
