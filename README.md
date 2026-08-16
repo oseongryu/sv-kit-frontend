@@ -12,13 +12,16 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 
 ## 사용 (프로젝트 쪽)
 
-**주 소비자 `sv-platform` 은 로컬 `file:` 링크로 문다** — 킷을 고치면 그 자리에서 반영되고
-pack·태그·핀 갱신 절차가 없다. 형제 디렉토리에 두는 것이 전제다.
+**주 소비자 `sv-platform` 은 이 리포를 서브모듈로 물고 `file:` 로 건다** — 킷을 고치면
+그 자리에서 반영되고 pack·태그·핀 갱신 절차가 없다.
 
 ```jsonc
-// package.json
-{ "dependencies": { "@sv/kit-ui": "file:../../sv-kit-frontend" } }
+// frontend/package.json   (vendor 는 서브모듈 체크아웃)
+{ "dependencies": { "@sv/kit-ui": "file:./vendor/sv-kit-frontend" } }
 ```
+
+소비 앱 안(`frontend/vendor/`)에 있으므로 **이미지 build context 에 들어오고**, node 의
+의존 상향 탐색도 소비 앱의 `node_modules` 를 자연히 찾는다.
 
 원격 소비자는 GitHub 태그 tarball 로 버전을 고정한다.
 
@@ -26,12 +29,10 @@ pack·태그·핀 갱신 절차가 없다. 형제 디렉토리에 두는 것이 
 { "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.20.0.tar.gz" } }
 ```
 
-`file:` 로 물 때 겪는 것 둘:
-- **이 리포의 `node_modules` 는 소비 앱 것을 가리키는 심볼릭 링크로 둔다.** 자기 사본을
-  두면 react·타입이 두 벌이 되어 "Two different types with this name exist" 로 타입체크가
-  깨진다.
-- **소비 앱이 turbopack 이면 `turbopack.root` 를 두 리포의 공통 조상까지 올린다** —
-  프로젝트 루트 밖을 가리키는 심볼릭 링크를 "points out of the filesystem root" 로 거부한다.
+**소비 앱 밖(형제 디렉토리)에 두면** 제약이 둘 생긴다 — 이 리포에 `node_modules` 사본이
+있으면 react·타입이 두 벌이 되고(자기 것을 지우고 소비 앱 것을 심볼릭 링크로 걸어야 한다),
+turbopack 은 프로젝트 루트 밖 심볼릭 링크를 "points out of the filesystem root" 로 거부해
+`turbopack.root` 를 공통 조상까지 올려야 한다. **vendor 로 두면 둘 다 없다.**
 
 ```ts
 // next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
