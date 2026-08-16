@@ -289,14 +289,14 @@ rehydrate 가 끝난 뒤에야 `initialTab` 자동 오픈을 판단한다. 안 �
 
 ## 0.12.0
 
-소비 앱 두 곳(ai-insight 어드민·git-worktree-nextjs)이 **각자 만들어 쓰던 같은 물건 둘**을 올린다.
+소비 앱 두 곳이 **각자 만들어 쓰던 같은 물건 둘**을 올린다.
 둘 다 새 서브패스라 기존 소비자에게 미치는 영향은 없다.
 
 - `ui/split-layout` 신설 — `SplitLayout`(좌 목록/우 상세 분할)·`Pane`·`SplitLayoutHandle`.
   폭은 드래그로 조절하고 `storageKey` 로 화면마다 기억하며(localStorage `split:<key>`),
-  좁은 화면에서는 왼쪽을 `Sheet` 서랍으로 연다. ai-insight 판이 뼈대이고
+  좁은 화면에서는 왼쪽을 `Sheet` 서랍으로 연다. 한쪽 판이 뼈대이고
   **호출부는 그대로 옮겨온다**(`storageKey`·`defaultSize`·`leftTitle`·`children:[left,right]`).
-  worktree 는 같은 조립을 화면 7개에 복붙한 채 폭 저장이 없고 `usePanelRef()` +
+  다른 한쪽은 같은 조립을 화면 7개에 복붙한 채 폭 저장이 없고 `usePanelRef()` +
   `matchMedia("(max-width: 767px)")` 감시 + `collapse()` 를 화면마다 다시 짜고 있었다 —
   그쪽이 필요로 하던 것을 옵션으로 흡수했다:
   - `layoutRef` — 바깥(머리줄 버튼)에서 여닫는 손잡이(`toggle`/`open`/`close`/`isClosed`).
@@ -324,11 +324,11 @@ rehydrate 가 끝난 뒤에야 `initialTab` 자동 오픈을 판단한다. 안 �
   `form-field` 의 `CheckField` 는 폼용이라 라벨 줄만큼 자리를 비우고 글자도 폼 크기여서
   조회줄에 넣으면 줄이 높아지고 글자가 튄다. 소비 앱들이 같은
   `<label class="… text-xs"><Checkbox/>…</label>` 를 화면마다 손으로 적고 있었다
-  (ai-insight 어드민 3곳). 네모는 `ui/checkbox`(base-ui)를 쓴다
+  (소비 앱 3곳). 네모는 `ui/checkbox`(base-ui)를 쓴다
 
 ## 0.10.0
 
-0.9.0 프리미티브를 소비 앱(ai-insight)과 `examples/ui-gallery` 에 실제로 물려 보며
+0.9.0 프리미티브를 소비 앱과 `examples/ui-gallery` 에 실제로 물려 보며
 드러난 것들을 고친다. 전부 additive 이거나 버그 수정이다.
 
 - `ui/section` 신설 — `Section`·`DescList` 를 `ui/modal` 에서 분리. 팝업 밖 화면 카드로도
@@ -350,7 +350,7 @@ rehydrate 가 끝난 뒤에야 `initialTab` 자동 오픈을 판단한다. 안 �
 
 ## 0.9.0
 
-운영 화면 조립 프리미티브 9종 흡수 — 소비 앱(ai-insight 어드민)에서 화면마다
+운영 화면 조립 프리미티브 9종 흡수 — 소비 앱에서 화면마다
 손으로 반복하던 조합을 올린다. 문구는 전부 한국어 기본값 + optional props 로 덮어쓰기.
 
 - `ui/modal` 추가 — `FormModal`(값 넣고 저장, 바닥 [취소][저장] 자동, `busy`/`busyLabel`)·
@@ -389,7 +389,7 @@ rehydrate 가 끝난 뒤에야 `initialTab` 자동 오픈을 판단한다. 안 �
 
 - `ui/select` 추가 — 네이티브 `<select>` 에 kit 스타일만 입힌 프리미티브.
   소비 앱들이 `className="border-input bg-card h-8 …"` 을 화면마다 복붙하고 있었다
-  (ai-insight 어드민 32곳). props 는 `<select>` 그대로라 한 줄 치환으로 옮긴다
+  (소비 앱 32곳). props 는 `<select>` 그대로라 한 줄 치환으로 옮긴다
 - `ui/table` 추가 — `Table`·`TableHead`·`TableBody`·`TableRow`·`TableHeaderCell`·`TableCell`.
   전역 CSS(`table { … }`)로 칠하던 것을 컴포넌트로. `TableRow` 는 `selected`
   props 와 `onClick` 유무로 고를 수 있는 행을 표현한다
