@@ -7,7 +7,7 @@
 			"path": "../sv-kit-backend"
 		},
 		{
-			"path": "../sv-kit-backend-v2"
+			"path": "../sv-kit-backend-flask"
 		},
 	],
 	"settings": {}
