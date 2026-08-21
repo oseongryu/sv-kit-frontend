@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.25.0
+
+`NavHeaderFrame` 에 `actions`(ReactNode) 슬롯을 연다 — 우측 아이콘 묶음(언어·테마·설정)
+앞에 끼운다. 소비 앱이 헤더에 자기 버튼을 놓을 자리이고 킷은 내용을 모른다.
+
 ## 0.24.0
 
 MIT 라이선스로 연다(`LICENSE`) — `package.json` 의 `UNLICENSED` 를 걷었다.

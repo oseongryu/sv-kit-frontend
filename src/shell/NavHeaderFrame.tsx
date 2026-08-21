@@ -3,7 +3,7 @@
 // 상단 네비 헤더의 표현 프레임 — 메뉴/사이드바토글/언어/테마/설정 버튼 바.
 // 상태와 핸들러는 전부 앱 주입. 모달(메뉴·설정·로그인)은 앱이 프레임 밖에 렌더.
 
-import { useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Settings, Sun, Moon, Globe, Menu, PanelLeft } from "lucide-react";
 import { Button } from "../ui/button";
 import { WithTooltip } from "../ui/with-tooltip";
@@ -20,6 +20,8 @@ export interface NavHeaderFrameProps {
   theme?: "dark" | "light";
   onToggleTheme?: () => void;
   onSettingsClick?: () => void;
+  /** 우측 아이콘 묶음 앞에 끼우는 앱 슬롯 — 킷은 내용을 모른다 */
+  actions?: ReactNode;
   /** 툴팁 문구 (기본 한국어) */
   labels?: {
     menu?: string;
@@ -33,6 +35,7 @@ export interface NavHeaderFrameProps {
 export function NavHeaderFrame({
   brandName, brandShort, onMenuClick, sidebarToggle,
   locale, onToggleLocale, theme, onToggleTheme, onSettingsClick,
+  actions,
   labels = {},
 }: NavHeaderFrameProps) {
   useEffect(() => {
@@ -66,6 +69,8 @@ export function NavHeaderFrame({
       )}
 
       <div className="flex-1" />
+
+      {actions}
 
       {/* 언어 전환 */}
       {onToggleLocale && (
