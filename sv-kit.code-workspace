@@ -6,9 +6,6 @@
 		{
 			"path": "../sv-kit-backend"
 		},
-		{
-			"path": "../sv-kit-backend-flask"
-		},
 	],
 	"settings": {}
 }
