@@ -10,34 +10,43 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 > **수정 전 필독**: [CONTRACT.md](CONTRACT.md) — 공개 계약(깨면 소비자 파손)과
 > 내부(자유 변경)의 경계, additive 변경 규율.
 
-## 사용 (프로젝트 쪽)
+## 이 저장소의 자리 — 뼈대만 있고 도메인은 없다
 
-**주 소비자 `sv-platform` 은 이 리포를 서브모듈로 물고 `file:` 로 건다** — 킷을 고치면
-그 자리에서 반영되고 pack·태그·핀 갱신 절차가 없다.
+킷에는 화면도 업무 용어도 없다. 도메인은 소비 앱이 갖고, 소비 앱은 그것을 **배포
+변형(edition)** 단위로 켠다 — 상류 `sv-platform` 의 `backend/editions/<변형>/edition.py`
+에 있는 `MODULES` 한 줄이 곧 게이팅이고, `scripts/z_carve.sh` 가 그 선언대로 잘라
+납품본(예: `wt-en`)을 낸다.
+
+그래서 **"킷에 모듈을 붙인다" 의 실제 모양은 상류에서 원하는 변형만 남기고 잘라내는
+것**이다. 킷은 어느 절삭본에도 그대로 남는 부분이다.
+
+모듈 경계를 지키는 검사는 소비 앱 쪽에 있다 — `frontend/scripts/check-isolation.cjs`
+(화면끼리·공용 층이 서로를 모른다), `backend/svkit/loader/domain_meta.py:check()`,
+`z_carve.sh` 의 잔존 참조 검증. 킷이 지키는 몫은 [CONTRACT.md](CONTRACT.md) 다.
+
+## 사용 (소비 앱 쪽)
+
+소비 채널은 **GitHub 태그 tarball 하나**다. public 저장소라 무인증이고 git 바이너리도
+필요 없다.
 
 ```jsonc
-// frontend/package.json   (vendor 는 서브모듈 체크아웃)
-{ "dependencies": { "@sv/kit-ui": "file:./vendor/sv-kit-frontend" } }
+// frontend/package.json
+{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.25.0.tar.gz" } }
 ```
-
-소비 앱 안(`frontend/vendor/`)에 있으므로 **이미지 build context 에 들어오고**, node 의
-의존 상향 탐색도 소비 앱의 `node_modules` 를 자연히 찾는다.
-
-원격 소비자는 GitHub 태그 tarball 로 버전을 고정한다.
-
-```jsonc
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.20.0.tar.gz" } }
-```
-
-**소비 앱 밖(형제 디렉토리)에 두면** 제약이 둘 생긴다 — 이 리포에 `node_modules` 사본이
-있으면 react·타입이 두 벌이 되고(자기 것을 지우고 소비 앱 것을 심볼릭 링크로 걸어야 한다),
-turbopack 은 프로젝트 루트 밖 심볼릭 링크를 "points out of the filesystem root" 로 거부해
-`turbopack.root` 를 공통 조상까지 올려야 한다. **vendor 로 두면 둘 다 없다.**
 
 ```ts
 // next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
 transpilePackages: ["@sv/kit-ui"],
 ```
+
+킷이 평범한 `node_modules` 항목이라 node 의 상향 탐색·turbopack·`npm ci` 가 다른 패키지와
+똑같이 다룬다. 형제 리포를 `file:`·서브모듈(`frontend/vendor/`)로 물던 시절의 제약
+(`turbopack.root` 를 공통 조상까지 올리기, 킷 리포의 `node_modules` 를 심볼릭 링크로 걸기,
+이미지가 `npm ci` 보다 먼저 `COPY frontend/vendor/`)은 **태그 tarball 로 옮기며 전부
+사라졌다.**
+
+**킷을 고쳐 가며 쓸 때**만 로컬 경로로 바꾼다 — `npm i ../sv-kit-frontend`, 되돌리기는
+태그 URL 로 `npm i` 다시.
 
 ## 서브패스
 
@@ -99,8 +108,11 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 
 | 소비자 | 비고 |
 |---|---|
-| `sv-platform/frontend` | 주 소비자. lock 이 `package-lock.json` 이므로 URL 을 고친 뒤 `npm install --package-lock-only` 로 lock 도 함께 갱신한다 |
-| `backend-auth/frontend` | 갱신 주기가 느리다 — 올릴 때 CHANGELOG 의 breaking 항목을 먼저 본다 |
+| `sv-platform/frontend` | **상류 하나뿐이다.** lock 이 `package-lock.json` 이므로 URL 을 고친 뒤 `npm install --package-lock-only` 로 lock 도 함께 갱신한다 |
+
+납품본(`wt-en` 등)은 상류의 절삭 산출물이라 따로 올리지 않는다 — 상류를 올린 뒤
+`sh scripts/z_deliver.sh <납품처>` 가 태그 URL 까지 실어 나른다. 구 `backend-auth` 는
+상류의 auth edition 으로 흡수되어 더는 별도 소비자가 아니다.
 
 ### 태그 형식
 

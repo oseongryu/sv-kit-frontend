@@ -1,8 +1,8 @@
 # sv-kit-frontend 공개 계약 (CONTRACT)
 
 이 문서는 @sv/kit-ui 를 고치는 사람(사람이든 에이전트든)을 위한 경계 선언이다.
-**공개 계약**에 속하는 것을 바꾸면 소비자(`sv-platform/frontend`·
-`backend-auth/frontend`)가 깨진다. **내부**에 속하는 것은
+**공개 계약**에 속하는 것을 바꾸면 소비자(상류 `sv-platform/frontend` 와 그 절삭
+납품본)가 깨진다. **내부**에 속하는 것은
 계약만 지키면 자유롭게 갈아치울 수 있다 — 라이브러리 교체 포함.
 
 백엔드는 **스택별로 두 계보**가 있다 — Flask 는 `sv-kit-backend`(`svkit`),
