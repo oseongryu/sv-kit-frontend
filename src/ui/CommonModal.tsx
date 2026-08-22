@@ -21,6 +21,15 @@ const SIZE = {
 
 type SizeKey = keyof typeof SIZE;
 
+// 팝업 한 장의 뼈대 — 머리줄·바닥줄은 붙박이고 **가운데 본문만** 스크롤한다.
+// 높이는 상한(max-h)이라 짧은 팝업은 내용 높이 그대로 줄어든다.
+//
+// 세 클래스 모두 `DialogContent` 기본값(`grid`·`max-h-[calc(100dvh-2rem)]`·
+// `overflow-y-auto`)을 **같은 그룹으로 덮으려고** 고른 것이다 — tailwind-merge 는
+// 그룹이 같을 때만 뒤엣것을 남긴다. 그래서 세로 스크롤을 끄는 클래스는
+// `overflow-hidden`(overflow 그룹)이 아니라 `overflow-y-hidden`(overflow-y 그룹)이다.
+const SHELL_CLASS = "flex max-h-[85svh] flex-col overflow-y-hidden";
+
 // 위치 프리셋 (PC 모드 기준, 모바일은 항상 센터)
 const POSITION_CLASS: Record<string, string> = {
   center: "",
@@ -44,9 +53,10 @@ interface CommonModalProps {
   /** 열릴 때 콜백 */
   onOpen?: () => void;
   /**
-   * 바닥 버튼 줄 — 주면 규격화된 줄(우측 정렬·간격)에 담긴다.
+   * 바닥 버튼 줄 — 주면 규격화된 줄(우측 정렬·간격)에 담기고 **본문이 길어도 붙어 있는다**.
    *
-   * 소비자가 매번 `flex justify-end gap-2` 를 손으로 그리면 여백이 한 곳씩 빠진다.
+   * 소비자가 매번 `flex justify-end gap-2` 를 손으로 그리면 여백이 한 곳씩 빠지고,
+   * 본문 흐름 끝에 그리면 긴 팝업에서 저장 버튼이 스크롤 밖으로 밀린다.
    * **안 주면 아무것도 그리지 않는다** — 기존 호출부는 그대로 동작한다.
    */
   footer?: ReactNode;
@@ -68,9 +78,9 @@ export function CommonModal({
         className={cn(
           sizeClass,
           positionClass,
-          // headerActions 모드: 헤더가 sticky 처럼 고정되어야 하므로 모달 자체는 스크롤 X.
-          // 내부 패널이 자기 영역 안에서 스크롤 처리한다.
-          isCustom && "flex flex-col p-0 gap-0 overflow-hidden",
+          SHELL_CLASS,
+          // headerActions 모드는 본문이 자기 여백·스크롤을 갖는다(내부 패널이 처리).
+          isCustom && "gap-0 p-0",
           className,
         )}
         showCloseButton={!isCustom}
@@ -93,12 +103,13 @@ export function CommonModal({
           </>
         ) : (
           <>
-            <DialogHeader>
+            <DialogHeader className="shrink-0">
               <DialogTitle>{title}</DialogTitle>
             </DialogHeader>
-            {children}
+            {/* 스크롤은 여기 하나뿐이다 — 머리줄·바닥줄이 따라 밀려 올라가지 않는다 */}
+            <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
             {footer ? (
-              <div className="flex justify-end gap-2 pt-1">{footer}</div>
+              <div className="flex shrink-0 justify-end gap-2 pt-1">{footer}</div>
             ) : null}
           </>
         )}

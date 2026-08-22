@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.26.0
+
+**팝업의 바닥 줄은 본문이 길어도 붙어 있는다** — `CommonModal` 기본 갈래가 footer 를
+본문 흐름 끝에 그려서, 내용이 길면 [저장]·[닫기]가 스크롤 밖으로 밀려 있었다.
+`headerActions` 갈래만 갖고 있던 구조를 기본 갈래에도 세운다.
+
+- 팝업 한 장이 `flex flex-col` + 높이 상한(`max-h-[85svh]`)이고, 머리줄·바닥줄은
+  `shrink-0`, **가운데 본문만** `min-h-0 flex-1 overflow-y-auto` 로 스크롤한다.
+  상한이지 고정 높이가 아니라 **짧은 팝업의 겉모양은 그대로**다.
+- 세로 스크롤을 끄는 클래스는 `overflow-hidden` 이 아니라 `overflow-y-hidden` 이다 —
+  tailwind-merge 는 그룹이 같을 때만 뒤엣것을 남기는데 `DialogContent` 기본값이
+  `overflow-y-auto`(overflow-y 그룹)여서, `overflow-hidden`(overflow 그룹)으로는
+  덮이지 않고 팝업이 통째로 다시 스크롤된다.
+- `ConfirmDialog` 도 같은 뼈대다 — 물음이 길어도 [취소][확인]이 남는다.
+- `FormModal`·`ViewModal`(ui/modal)은 footer 슬롯을 쓰므로 자동으로 따라온다.
+  호출부는 손댈 것이 없다.
+
 ## 0.25.0
 
 `NavHeaderFrame` 에 `actions`(ReactNode) 슬롯을 연다 — 우측 아이콘 묶음(언어·테마·설정)

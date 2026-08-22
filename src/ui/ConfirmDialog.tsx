@@ -26,12 +26,15 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   return (
     <Dialog open={open} onOpenChange={(v: boolean) => { if (!v) onClose(); }}>
-      <DialogContent className="sm:max-w-sm">
-        <DialogHeader>
+      {/* 뼈대는 CommonModal 과 같다 — 물음이 길어도 [취소][확인]은 붙어 있는다 */}
+      <DialogContent className="flex max-h-[85svh] flex-col overflow-y-hidden sm:max-w-sm">
+        <DialogHeader className="shrink-0">
           <DialogTitle>{title}</DialogTitle>
         </DialogHeader>
-        <p className="text-sm text-muted-foreground">{message}</p>
-        <div className="flex justify-end gap-2 pt-2">
+        <p className="min-h-0 flex-1 overflow-y-auto text-sm text-muted-foreground">
+          {message}
+        </p>
+        <div className="flex shrink-0 justify-end gap-2 pt-2">
           <Button variant="outline" size="sm" onClick={onClose}>{cancelLabel}</Button>
           <Button variant={variant} size="sm" onClick={() => { onConfirm(); onClose(); }}>{confirmLabel}</Button>
         </div>
