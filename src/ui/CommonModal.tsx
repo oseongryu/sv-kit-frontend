@@ -23,11 +23,8 @@ type SizeKey = keyof typeof SIZE;
 
 // 팝업 한 장의 뼈대 — 머리줄·바닥줄은 붙박이고 **가운데 본문만** 스크롤한다.
 // 높이는 상한(max-h)이라 짧은 팝업은 내용 높이 그대로 줄어든다.
-//
-// 세 클래스 모두 `DialogContent` 기본값(`grid`·`max-h-[calc(100dvh-2rem)]`·
-// `overflow-y-auto`)을 **같은 그룹으로 덮으려고** 고른 것이다 — tailwind-merge 는
-// 그룹이 같을 때만 뒤엣것을 남긴다. 그래서 세로 스크롤을 끄는 클래스는
-// `overflow-hidden`(overflow 그룹)이 아니라 `overflow-y-hidden`(overflow-y 그룹)이다.
+// 세 클래스는 `DialogContent` 기본값(`grid`·`max-h-[calc(100dvh-2rem)]`·
+// `overflow-y-auto`)을 tailwind-merge 로 덮는다 — 스크롤은 본문 한 곳만 갖는다.
 const SHELL_CLASS = "flex max-h-[85svh] flex-col overflow-y-hidden";
 
 // 위치 프리셋 (PC 모드 기준, 모바일은 항상 센터)
