@@ -104,18 +104,13 @@ FastAPI 는 `sv-kit-backend-v2`(`svkit`). 응답 규약(`{ok,data,meta}`)을 이
 
 ## 배포·버전 규약
 
-| 축 | 배포물 | 소비자 반영 |
+| 축 | 자리 | 소비자 반영 |
 |---|---|---|
-| @sv/kit-ui | GitHub 태그 `ui-vX.Y.Z` (tarball) | package.json 의 태그 URL 갱신 |
+| 킷 소스 | 소비 리포가 `frontend/svkit/` 로 **직접 커밋** | `@/kit/<모듈>` (tsconfig paths) |
+| 공개 리포(sv-kit-frontend) | 스냅샷 — `scripts/z_release.sh` 가 밀어낸다 | 소비 채널 아님 |
 
-- 버전은 **semver(0.x)** 다 — `20260804.1.0`·`.2.0`·`.3.0` 세 판만 날짜 기반이었고
-  0.18.2 에서 되돌렸다 (경위는 CHANGELOG 0.18.2)
-- 태그: `ui-vX.Y.Z` — `git push origin main --tags` 가 곧 배포.
-  날짜 버전으로 나간 `ui-v20260804.*` 태그는 그 형식 그대로 두고 옮기지 않는다
-- **소비 채널은 GitHub 태그 고정 하나**: 소비자 전부 package.json 에
-  `https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v<버전>.tar.gz`
-  로 고정 소비 (public 저장소 — 무인증, git 바이너리 불필요). 로컬 kit 개발은 `file:` 경로.
-  소비자 목록은 README 릴리스 절차 4번에 있다 — 늘거나 줄면 그쪽을 고친다
-- 소비자는 태그 URL 로 버전이 고정된다 — kit 의 어떤 변경도 소비자가
-  URL 태그를 올리기 전에는 도달하지 않는다. 이것이 breaking 변경의
-  최종 방어선이다. **한 번 push 한 태그는 옮기지 않는다.**
+- **tarball 소비 채널(`ui-vX.Y.Z` 태그 + archive URL)은 폐기했다** — 소스가 소비 리포
+  안에 있어 판 고정이 없다. 옛 `ui-v*` 태그는 그대로 두고 옮기지 않는다.
+- 버전은 package.json 의 **semver(0.x)** 로 CHANGELOG 의 판 구분용 이력 표기만 남는다.
+- breaking 의 방어선은 태그 고정이 아니라 **한 리포 안의 타입 검사**다 — 킷을 고치면
+  소비 화면의 컴파일이 그 자리에서 깨지므로, 공개 면을 바꿀 때 소비처를 함께 고친다.

@@ -1,11 +1,12 @@
-# sv-kit-frontend (@sv/kit-ui)
+# sv-kit-frontend
 
-svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규약·인증)·
-훅·ui 프리미티브·탭 셸(shell/route-shell)·NavSidebar 를 소스(tsx)로 배포하고,
-소비 앱의 Next `transpilePackages` 가 직접 컴파일한다.
+svkit 기반 서비스의 프론트 공통 킷. API 래퍼(ok/err 규약·인증)·
+훅·ui 프리미티브·탭 셸(shell/route-shell)·NavSidebar 를 소스(tsx)로 갖는다.
 
-백엔드는 스택별로 두 계보다 — Flask 는 `sv-kit-backend`(`svkit`), FastAPI 는
-`sv-kit-backend-v2`(`svkit`). 프론트·백엔드 모두 **GitHub 태그 tarball 로 고정**해 받는다.
+**이 리포는 상류(`sv-platform/frontend/svkit/`) 소스의 공개 스냅샷이다** — 소비 앱이
+소스를 `frontend/svkit/` 로 직접 커밋해 쓰고, 동기화는 상류의 `scripts/z_release.sh` 가
+한다. 백엔드 대응물은 `sv-kit-backend`(FastAPI 커널 스냅샷)이고 Flask 계보는
+`sv-kit-backend-flask`(이력 리포)다.
 
 > **수정 전 필독**: [CONTRACT.md](CONTRACT.md) — 공개 계약(깨면 소비자 파손)과
 > 내부(자유 변경)의 경계, additive 변경 규율.
@@ -26,39 +27,32 @@ svkit 기반 서비스의 프론트 공통 npm 패키지. API 래퍼(ok/err 규�
 
 ## 사용 (소비 앱 쪽)
 
-소비 채널은 **GitHub 태그 tarball 하나**다. public 저장소라 무인증이고 git 바이너리도
-필요 없다.
+소비 방식은 **소스 직접 커밋 하나**다 — 이 리포의 `src/` 를 소비 앱의
+`frontend/svkit/` 에 넣고 tsconfig paths 로 이름을 단다. 의존 패키지도 빌드 단계도 없고,
+소스가 프로젝트 안이라 Next 가 자연히 컴파일한다(`transpilePackages` 불필요).
 
 ```jsonc
-// frontend/package.json
-{ "dependencies": { "@sv/kit-ui": "https://github.com/oseongryu/sv-kit-frontend/archive/refs/tags/ui-v0.25.0.tar.gz" } }
+// tsconfig.json
+{ "compilerOptions": { "paths": { "@/kit/*": ["./svkit/*"] } } }
 ```
 
-```ts
-// next.config.ts — 소스(ts) 배포라 Next 가 직접 컴파일
-transpilePackages: ["@sv/kit-ui"],
-```
+옛 소비 채널(npm `@sv/kit-ui` 태그 tarball, `file:` 경로, 서브모듈)은 전부 폐기했다 —
+버전 갈아타기·lock 갱신·`transpilePackages` 제약이 함께 사라졌다.
 
-킷이 평범한 `node_modules` 항목이라 node 의 상향 탐색·turbopack·`npm ci` 가 다른 패키지와
-똑같이 다룬다. 형제 리포를 `file:`·서브모듈(`frontend/vendor/`)로 물던 시절의 제약
-(`turbopack.root` 를 공통 조상까지 올리기, 킷 리포의 `node_modules` 를 심볼릭 링크로 걸기,
-이미지가 `npm ci` 보다 먼저 `COPY frontend/vendor/`)은 **태그 tarball 로 옮기며 전부
-사라졌다.**
-
-**킷을 고쳐 가며 쓸 때**만 로컬 경로로 바꾼다 — `npm i ../sv-kit-frontend`, 되돌리기는
-태그 URL 로 `npm i` 다시.
+**킷 수정은 소비 앱의 `frontend/svkit/` 에서 직접** 하고, 상류(`sv-platform`)의
+`scripts/z_release.sh` 가 이 리포로 밀어낸다.
 
 ## 서브패스
 
 | import | 역할 |
 |---|---|
-| `@sv/kit-ui/api` | `get/post/buildUrl/sseUrl/login/logout`, `API_BASE`, `ApiError` |
-| `@sv/kit-ui/core` | `makeTransport` 주입형 전송(멀티서버·SSE) |
-| `@sv/kit-ui/hooks` | `useLocalStorage`·`useDebounce`·`useEventStream` |
-| `@sv/kit-ui/ui/*` | shadcn 계열 프리미티브 + 운영 화면 조립 프리미티브 + `ui/utils`(cn) |
-| `@sv/kit-ui/styles/*` | 배포 CSS — 지금은 `styles/tokens.css`(상태색 토큰) 하나 |
-| `@sv/kit-ui/shell` | `LayoutApp`·`NavHeaderFrame`·`NavMenuModal`·`CommandPalette`·탭 스토어 |
-| `@sv/kit-ui/route-shell` | 라우트 탭 셸(`RouteAppShell`·`RouteTabBar`·`SplitPane`·스토어 팩토리) |
+| `@/kit/api` | `get/post/buildUrl/sseUrl/login/logout`, `API_BASE`, `ApiError` |
+| `@/kit/core` | `makeTransport` 주입형 전송(멀티서버·SSE) |
+| `@/kit/hooks` | `useLocalStorage`·`useDebounce`·`useEventStream` |
+| `@/kit/ui/*` | shadcn 계열 프리미티브 + 운영 화면 조립 프리미티브 + `ui/utils`(cn) |
+| `@/kit/styles/*` | 배포 CSS — 지금은 `styles/tokens.css`(상태색 토큰) 하나 |
+| `@/kit/shell` | `LayoutApp`·`NavHeaderFrame`·`NavMenuModal`·`CommandPalette`·탭 스토어 |
+| `@/kit/route-shell` | 라우트 탭 셸(`RouteAppShell`·`RouteTabBar`·`SplitPane`·스토어 팩토리) |
 
 ## 운영 화면 조립 프리미티브 (0.9.0~)
 
@@ -90,7 +84,7 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 한 줄 넣는다 (tailwind v4 기준, `@import "tailwindcss"` 뒤):
 
 ```css
-@import "@sv/kit-ui/styles/tokens.css";
+@import "@/kit/styles/tokens.css";
 ```
 
 라이트/다크 값(oklch)과 tailwind `@theme inline` 매핑이 함께 들어 있다.
@@ -98,28 +92,13 @@ kit-ui 는 shadcn 표준 토큰만 가정하는데 `StatusBadge` 의 **ok·warn 
 
 ## 릴리스
 
-버전은 semver. 브레이킹 체인지 시 minor(0.x 동안) 승격 + 아래 동기화 필수:
+**소비 리포 안에 소스가 있으므로 태그 배포가 없다.** 이 리포의 갱신은 상류
+`sh scripts/z_release.sh` 가 하고(스냅샷 동기), 커밋·push 가 전부다.
+버전은 `package.json` 의 semver(0.x)로 CHANGELOG 의 판 구분용 이력 표기만 남는다.
 
-1. `package.json` version + CHANGELOG
-2. **이 README 상단 설치 예시**의 태그 URL 갱신
-3. `git tag ui-v<버전>` → `git push origin main --tags` (태그 push 가 곧 배포)
-4. 소비자 package.json 의 tarball URL 태그 갱신 — **아래 목록이 전부다**.
-   태그 고정이라 올리지 않은 소비자는 옛 판 그대로 돌아간다(깨지지 않는다)
-
-| 소비자 | 비고 |
-|---|---|
-| `sv-platform/frontend` | **상류 하나뿐이다.** lock 이 `package-lock.json` 이므로 URL 을 고친 뒤 `npm install --package-lock-only` 로 lock 도 함께 갱신한다 |
-
-납품본(`wt-en` 등)은 상류의 절삭 산출물이라 따로 올리지 않는다 — 상류를 올린 뒤
-`sh scripts/z_deliver.sh <납품처>` 가 태그 URL 까지 실어 나른다. 구 `backend-auth` 는
-상류의 auth edition 으로 흡수되어 더는 별도 소비자가 아니다.
-
-### 태그 형식
-
-태그는 `ui-v<버전>` 이다 — 예: `ui-v0.18.2`.
-**한 번 push 한 태그는 옮기지 않는다.** 날짜 기반으로 나갔던 세 판
-(`ui-v20260804.1.0`·`.2.0`·`.3.0`)도 그 번호 그대로 남는다 — 버전 체계를 semver 로
-되돌렸어도 이미 발행된 태그는 건드리지 않는다. 소비자 package.json 이 그 URL 을 가리킨다.
+옛 tarball 채널의 `ui-v*` 태그는 그대로 남긴다 — **한 번 push 한 태그는 옮기지 않는다.**
+납품본(`wt-en` 등)은 상류의 절삭 산출물이라 킷도 소스로 함께 실려 간다
+(`sh scripts/z_deliver.sh <납품처>`).
 
 ## 라이선스
 
